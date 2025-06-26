@@ -7,6 +7,9 @@ import 'screens/enter_amount_screen.dart';
 import 'screens/confirm_transfer_screen.dart';
 import 'screens/schedule_transfer_screen.dart';
 import 'screens/recurring_transfer_confirmation_screen.dart';
+import 'screens/received_funds_screen.dart';
+import 'screens/transaction_history_screen.dart';
+import 'screens/transaction_invoice_screen.dart';
 import 'package:device_preview/device_preview.dart';
 
 void main() {
@@ -107,6 +110,9 @@ class MyApp extends StatelessWidget {
         '/confirm_transfer': (context) => const ConfirmTransferScreen(),
         '/schedule_transfer': (context) => const ScheduleTransferScreen(),
         '/recurring_transfer_confirmation': (context) => const RecurringTransferConfirmationScreen(),
+        '/transaction_history': (context) => const TransactionHistoryScreen(),
+        '/received_funds': (context) => const ReceivedFundsScreen(),
+        '/transaction_invoice' : (context) => const TransactionInvoiceScreen()
       },
     );
   }

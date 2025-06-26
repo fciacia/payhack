@@ -131,6 +131,15 @@ class ChooseRecipientScreen extends StatelessWidget {
                 style: TextStyle(color: Colors.grey, fontSize: 14),
               ),
             ),
+            const SizedBox(height: 15),
+            _buildActionButton(
+              context,
+              icon: Icons.receipt,
+              title: 'Transaction History',
+              onTap: () {
+                Navigator.pushNamed(context, '/transaction_history');
+              },
+            ),
           ],
         ),
       ),
