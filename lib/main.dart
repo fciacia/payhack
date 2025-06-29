@@ -28,6 +28,10 @@ import 'screens/recurring_transfer_screen.dart';
 import 'screens/chain_selection_screen.dart';
 import 'screens/bridge_status_screen.dart';
 import 'screens/gas_fee_comparison_screen.dart';
+import 'screens/sign_up_screen.dart';
+import 'screens/personal_info_screen.dart';
+import 'screens/identity_verified_screen.dart';
+import 'screens/identity_verification_screen.dart';
 
 void main() {
   runApp(DevicePreview(enabled: true, builder: (context) => const MyApp()));
@@ -144,7 +148,7 @@ class MyApp extends StatelessWidget {
         '/welcome': (context) => const WelcomeOnboardingScreen(),
         '/connect_wallet': (context) => const ConnectWalletScreen(),
         '/ekyc_upload': (context) => const EKYCUploadScreen(),
-        '/verified': (context) => const VerifiedDIDScreen(),
+        '/verified': (context) => const IdentityVerifiedScreen(),
 
         // Main flow
         '/': (context) => const HomeScaffold(),
@@ -181,6 +185,10 @@ class MyApp extends StatelessWidget {
           amount: 'RM 500',
         ),
         '/recurring_transfer': (context) => const RecurringTransferScreen(),
+        '/sign_up': (context) => const SignUpScreen(),
+        '/personal_info': (context) => const PersonalInfoScreen(),
+        '/identity_verification': (context) =>
+            const IdentityVerificationScreen(),
       },
     );
   }
