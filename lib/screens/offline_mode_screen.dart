@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 class OfflineModeScreen extends StatefulWidget {
+  const OfflineModeScreen({super.key});
+
   @override
-  _OfflineModeScreenState createState() => _OfflineModeScreenState();
+  OfflineModeScreenState createState() => OfflineModeScreenState();
 }
 
-class _OfflineModeScreenState extends State<OfflineModeScreen> {
+class OfflineModeScreenState extends State<OfflineModeScreen> {
   int queuedTransactions = 3;
 
   void _confirmTransfer() {
@@ -50,33 +52,44 @@ class _OfflineModeScreenState extends State<OfflineModeScreen> {
               textAlign: TextAlign.center,
             ),
             const Divider(height: 32),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton.icon(
-                  icon: const Icon(Icons.bluetooth),
-                  label: const Text('Send via NFC / Bluetooth'),
-                  onPressed: _confirmTransfer,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton.icon(
+                    icon: const Icon(Icons.bluetooth),
+                    label: const Text('Send via NFC / Bluetooth'),
+                    onPressed: _confirmTransfer,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 18,
+                        vertical: 12,
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 16),
-                OutlinedButton.icon(
-                  icon: const Icon(Icons.qr_code_scanner),
-                  label: const Text('Scan Recipient'),
-                  onPressed: _scanRecipient,
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+                  const SizedBox(width: 16),
+                  OutlinedButton.icon(
+                    icon: const Icon(Icons.qr_code_scanner),
+                    label: const Text('Scan Recipient'),
+                    onPressed: _scanRecipient,
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 18,
+                        vertical: 12,
+                      ),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             const SizedBox(height: 32),
             Card(
               color: Colors.grey[50],
               elevation: 0,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: Column(
@@ -87,7 +100,10 @@ class _OfflineModeScreenState extends State<OfflineModeScreen> {
                         const SizedBox(width: 10),
                         Text(
                           '🔐 $queuedTransactions transaction${queuedTransactions > 1 ? 's' : ''} queued',
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
                         ),
                       ],
                     ),
@@ -98,10 +114,15 @@ class _OfflineModeScreenState extends State<OfflineModeScreen> {
                     ),
                     const SizedBox(height: 12),
                     Tooltip(
-                      message: 'Backup node is holding your hash receipt securely.',
+                      message:
+                          'Backup node is holding your hash receipt securely.',
                       child: Row(
                         children: const [
-                          Icon(Icons.info_outline, color: Colors.blue, size: 18),
+                          Icon(
+                            Icons.info_outline,
+                            color: Colors.blue,
+                            size: 18,
+                          ),
                           SizedBox(width: 6),
                           Text(
                             'Stand-in node active',

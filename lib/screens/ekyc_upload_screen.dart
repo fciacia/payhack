@@ -31,7 +31,7 @@ class _EKYCUploadScreenState extends State<EKYCUploadScreen> {
       appBar: AppBar(
         title: const Text("e-KYC Verification"),
         backgroundColor: Colors.transparent,
-        foregroundColor: Theme.of(context).colorScheme.onBackground,
+        foregroundColor: Theme.of(context).colorScheme.onSurface,
         elevation: 0,
       ),
       body: Padding(
@@ -51,10 +51,7 @@ class _EKYCUploadScreenState extends State<EKYCUploadScreen> {
             const SizedBox(height: 8),
             const Text(
               "Upload your passport for identity verification",
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
-              ),
+              style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
             const SizedBox(height: 40),
             // Upload area
@@ -69,9 +66,7 @@ class _EKYCUploadScreenState extends State<EKYCUploadScreen> {
                   style: BorderStyle.solid,
                 ),
               ),
-              child: _isUploaded
-                  ? _buildUploadedState()
-                  : _buildUploadState(),
+              child: _isUploaded ? _buildUploadedState() : _buildUploadState(),
             ),
             const SizedBox(height: 30),
             // Upload button
@@ -98,7 +93,9 @@ class _EKYCUploadScreenState extends State<EKYCUploadScreen> {
                               height: 20,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  Colors.white,
+                                ),
                               ),
                             ),
                             SizedBox(width: 12),
@@ -107,7 +104,10 @@ class _EKYCUploadScreenState extends State<EKYCUploadScreen> {
                         )
                       : const Text(
                           "Upload Passport (Mock)",
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                 ),
               ),
@@ -144,10 +144,7 @@ class _EKYCUploadScreenState extends State<EKYCUploadScreen> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text(
-                  "Back",
-                  style: TextStyle(fontSize: 16),
-                ),
+                child: const Text("Back", style: TextStyle(fontSize: 16)),
               ),
             ),
           ],
@@ -160,26 +157,16 @@ class _EKYCUploadScreenState extends State<EKYCUploadScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(
-          Icons.upload_file,
-          size: 48,
-          color: Colors.grey[400],
-        ),
+        Icon(Icons.upload_file, size: 48, color: Colors.grey[400]),
         const SizedBox(height: 16),
         Text(
           "Tap to upload your passport",
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.grey[600],
-          ),
+          style: TextStyle(fontSize: 16, color: Colors.grey[600]),
         ),
         const SizedBox(height: 8),
         Text(
           "Supported formats: JPG, PNG, PDF",
-          style: TextStyle(
-            fontSize: 14,
-            color: Colors.grey[500],
-          ),
+          style: TextStyle(fontSize: 14, color: Colors.grey[500]),
         ),
       ],
     );
@@ -189,11 +176,7 @@ class _EKYCUploadScreenState extends State<EKYCUploadScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(
-          Icons.check_circle,
-          size: 48,
-          color: Colors.green,
-        ),
+        Icon(Icons.check_circle, size: 48, color: Colors.green),
         const SizedBox(height: 16),
         const Text(
           "Passport uploaded successfully!",
@@ -206,10 +189,7 @@ class _EKYCUploadScreenState extends State<EKYCUploadScreen> {
         const SizedBox(height: 8),
         Text(
           "Your document is being processed",
-          style: TextStyle(
-            fontSize: 14,
-            color: Colors.grey[600],
-          ),
+          style: TextStyle(fontSize: 14, color: Colors.grey[600]),
         ),
       ],
     );

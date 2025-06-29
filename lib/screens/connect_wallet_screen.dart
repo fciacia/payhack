@@ -9,7 +9,7 @@ class ConnectWalletScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Connect Wallet"),
         backgroundColor: Colors.transparent,
-        foregroundColor: Theme.of(context).colorScheme.onBackground,
+        foregroundColor: Theme.of(context).colorScheme.onSurface,
         elevation: 0,
       ),
       body: Padding(
@@ -29,10 +29,7 @@ class ConnectWalletScreen extends StatelessWidget {
             const SizedBox(height: 16),
             const Text(
               "Connect your existing wallet or create a new account",
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
-              ),
+              style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
             const SizedBox(height: 40),
             // MetaMask option
@@ -44,7 +41,9 @@ class ConnectWalletScreen extends StatelessWidget {
               onTap: () {
                 // Mock MetaMask connection
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('MetaMask connection successful!')),
+                  const SnackBar(
+                    content: Text('MetaMask connection successful!'),
+                  ),
                 );
                 Navigator.pushNamed(context, '/ekyc_upload');
               },
@@ -68,10 +67,7 @@ class ConnectWalletScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text(
-                  "Back",
-                  style: TextStyle(fontSize: 16),
-                ),
+                child: const Text("Back", style: TextStyle(fontSize: 16)),
               ),
             ),
           ],
@@ -89,9 +85,7 @@ class ConnectWalletScreen extends StatelessWidget {
   }) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(16),
@@ -103,14 +97,10 @@ class ConnectWalletScreen extends StatelessWidget {
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                  color: Colors.deepPurple.withOpacity(0.1),
+                  color: Colors.deepPurple.withAlpha((0.1 * 255).round()),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Icon(
-                  icon,
-                  color: Colors.deepPurple,
-                  size: 24,
-                ),
+                child: Icon(icon, color: Colors.deepPurple, size: 24),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -127,19 +117,12 @@ class ConnectWalletScreen extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       subtitle,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
-                      ),
+                      style: const TextStyle(fontSize: 14, color: Colors.grey),
                     ),
                   ],
                 ),
               ),
-              const Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.grey,
-                size: 16,
-              ),
+              const Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 16),
             ],
           ),
         ),

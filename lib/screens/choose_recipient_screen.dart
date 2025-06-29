@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../app_colors.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -98,11 +98,17 @@ class _DashboardPageState extends State<DashboardPage> {
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        title: Text('Hi, $username', style: const TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(
+          'Hi, $username',
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
         centerTitle: false,
         elevation: 0,
         backgroundColor: Colors.transparent,
-        foregroundColor: Theme.of(context).colorScheme.onBackground,
+        foregroundColor: Theme.of(context).colorScheme.onSurface,
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -116,30 +122,64 @@ class _DashboardPageState extends State<DashboardPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 10),
-            
+            // TEMP: Dev navigation buttons
+            Container(
+              margin: const EdgeInsets.only(bottom: 8),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
+              decoration: BoxDecoration(
+                color: AppColors.lace.withAlpha((0.7 * 255).round()),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _FancyNavButton(
+                      label: 'Chain Selection',
+                      onTap: () =>
+                          Navigator.pushNamed(context, '/chain_selection'),
+                    ),
+                    const SizedBox(width: 14),
+                    _FancyNavButton(
+                      label: 'Bridge Status',
+                      onTap: () =>
+                          Navigator.pushNamed(context, '/bridge_status'),
+                    ),
+                    const SizedBox(width: 14),
+                    _FancyNavButton(
+                      label: 'Gas Fee Comparison',
+                      onTap: () =>
+                          Navigator.pushNamed(context, '/gas_fee_comparison'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+
             // Multi-Asset Wallet Cards
             _buildWalletCardsSection(),
-            
+
             const SizedBox(height: 20),
-            
+
             // Geo-Aware Balance Info
             _buildGeoAwareBalanceSection(),
-            
+
             const SizedBox(height: 20),
-            
+
             // AI Suggestions Panel
             _buildAISuggestionsPanel(),
-            
+
             const SizedBox(height: 20),
-            
+
             // Navigation Buttons
             _buildNavigationButtons(),
-            
+
             const SizedBox(height: 20),
-            
+
             // Transaction History
             _buildTransactionHistorySection(),
-            
+
             const SizedBox(height: 20),
           ],
         ),
@@ -182,7 +222,7 @@ class _DashboardPageState extends State<DashboardPage> {
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
-            color: Colors.deepPurple.withOpacity(0.08),
+            color: Colors.deepPurple.withAlpha((0.08 * 255).round()),
             blurRadius: 16,
             offset: const Offset(0, 6),
           ),
@@ -202,11 +242,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   color: asset['color'].withOpacity(0.1),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Icon(
-                  asset['icon'],
-                  color: asset['color'],
-                  size: 16,
-                ),
+                child: Icon(asset['icon'], color: asset['color'], size: 16),
               ),
               const Spacer(),
               _buildTrendIndicator(asset['trend']),
@@ -215,10 +251,7 @@ class _DashboardPageState extends State<DashboardPage> {
           const SizedBox(height: 6),
           Text(
             asset['name'],
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.bold,
-            ),
+            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 2),
           Text(
@@ -234,11 +267,16 @@ class _DashboardPageState extends State<DashboardPage> {
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepPurple.withOpacity(0.1),
+                backgroundColor: Colors.deepPurple.withAlpha(
+                  (0.1 * 255).round(),
+                ),
                 foregroundColor: Colors.deepPurple,
                 elevation: 0,
                 padding: const EdgeInsets.symmetric(vertical: 4),
-                textStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                textStyle: const TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                ),
                 minimumSize: const Size(0, 28),
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 shape: RoundedRectangleBorder(
@@ -246,9 +284,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
               ),
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Convert ${asset['name']}')),
-                );
+                Navigator.pushNamed(context, '/send_flow');
               },
               child: const Text('Convert'),
             ),
@@ -261,7 +297,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget _buildTrendIndicator(String trend) {
     IconData icon;
     Color color;
-    
+
     switch (trend) {
       case 'up':
         icon = Icons.trending_up;
@@ -275,11 +311,21 @@ class _DashboardPageState extends State<DashboardPage> {
         icon = Icons.trending_flat;
         color = Colors.grey;
     }
-    
+
     return Icon(icon, color: color, size: 16);
   }
 
   Widget _buildGeoAwareBalanceSection() {
+    String displayBalance;
+    if (showOriginalCurrency) {
+      displayBalance = 'RM100,000,000';
+    } else if (selectedCurrency == 'USD') {
+      displayBalance = '\$27,000';
+    } else if (selectedCurrency == 'JPY') {
+      displayBalance = '¥3,200,000,000';
+    } else {
+      displayBalance = 'RM100,000,000';
+    }
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
@@ -288,7 +334,7 @@ class _DashboardPageState extends State<DashboardPage> {
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
-            color: Colors.deepPurple.withOpacity(0.08),
+            color: Colors.deepPurple.withAlpha((0.08 * 255).round()),
             blurRadius: 16,
             offset: const Offset(0, 6),
           ),
@@ -303,8 +349,10 @@ class _DashboardPageState extends State<DashboardPage> {
               children: [
                 const Icon(Icons.pin_drop, size: 18, color: Colors.deepPurple),
                 const SizedBox(width: 6),
-                const Text('🇯🇵 Showing in JPY (based on your location)', 
-                  style: TextStyle(fontSize: 14)),
+                const Text(
+                  '🇯🇵 Showing in JPY (based on your location)',
+                  style: TextStyle(fontSize: 14),
+                ),
                 const SizedBox(width: 8),
                 TextButton(
                   onPressed: () {
@@ -312,7 +360,11 @@ class _DashboardPageState extends State<DashboardPage> {
                       showOriginalCurrency = !showOriginalCurrency;
                     });
                   },
-                  child: Text(showOriginalCurrency ? 'View in JPY' : 'View in Original Currency'),
+                  child: Text(
+                    showOriginalCurrency
+                        ? 'View in JPY'
+                        : 'View in Original Currency',
+                  ),
                 ),
               ],
             ),
@@ -322,7 +374,7 @@ class _DashboardPageState extends State<DashboardPage> {
             children: [
               Flexible(
                 child: Text(
-                  showOriginalCurrency ? 'RM100,000,000' : '¥3,200,000,000',
+                  displayBalance,
                   style: const TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
@@ -338,10 +390,7 @@ class _DashboardPageState extends State<DashboardPage> {
           const SizedBox(height: 8),
           Text(
             'Total Balance',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[600],
-            ),
+            style: TextStyle(fontSize: 14, color: Colors.grey[600]),
           ),
         ],
       ),
@@ -359,8 +408,14 @@ class _DashboardPageState extends State<DashboardPage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           _buildCurrencyChip('MYR', showOriginalCurrency),
-          _buildCurrencyChip('USD', !showOriginalCurrency && selectedCurrency == 'USD'),
-          _buildCurrencyChip('JPY', !showOriginalCurrency && selectedCurrency == 'JPY'),
+          _buildCurrencyChip(
+            'USD',
+            !showOriginalCurrency && selectedCurrency == 'USD',
+          ),
+          _buildCurrencyChip(
+            'JPY',
+            !showOriginalCurrency && selectedCurrency == 'JPY',
+          ),
         ],
       ),
     );
@@ -401,10 +456,10 @@ class _DashboardPageState extends State<DashboardPage> {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.deepPurple.withOpacity(0.07),
+        color: Colors.deepPurple.withAlpha((0.07 * 255).round()),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Colors.deepPurple.withOpacity(0.1),
+          color: Colors.deepPurple.withAlpha((0.1 * 255).round()),
         ),
       ),
       child: Column(
@@ -416,23 +471,14 @@ class _DashboardPageState extends State<DashboardPage> {
               const SizedBox(width: 8),
               const Text(
                 'AI Suggestions',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ],
           ),
           const SizedBox(height: 12),
-          Text(
-            aiSuggestions[0],
-            style: const TextStyle(fontSize: 14),
-          ),
+          Text(aiSuggestions[0], style: const TextStyle(fontSize: 14)),
           const SizedBox(height: 8),
-          Text(
-            aiSuggestions[1],
-            style: const TextStyle(fontSize: 14),
-          ),
+          Text(aiSuggestions[1], style: const TextStyle(fontSize: 14)),
           const SizedBox(height: 12),
           Row(
             children: [
@@ -440,7 +486,10 @@ class _DashboardPageState extends State<DashboardPage> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.deepPurple,
                   foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -465,8 +514,17 @@ class _DashboardPageState extends State<DashboardPage> {
       spacing: 24,
       runSpacing: 16,
       children: [
-        _buildNavButton(Icons.send, 'Send Money', '/enter_amount'),
-        _buildNavButton(Icons.account_balance_wallet, 'Receive Money', '/receive_funds'),
+        _buildNavButton(Icons.send, 'Send Money', '/send_flow'),
+        _buildNavButton(
+          Icons.repeat,
+          'Recurring Transfer',
+          '/recurring_transfer',
+        ),
+        _buildNavButton(
+          Icons.account_balance_wallet,
+          'Receive Money',
+          '/receive_funds',
+        ),
         _buildNavButton(Icons.request_page, 'Request Money', '/request_money'),
         _buildNavButton(Icons.qr_code_scanner, 'Scan QR', '/my_qr_code'),
         _buildNavButton(Icons.wifi_off, 'Offline Mode', '/offline_mode'),
@@ -479,7 +537,7 @@ class _DashboardPageState extends State<DashboardPage> {
       children: [
         Ink(
           decoration: ShapeDecoration(
-            color: Colors.deepPurple.withOpacity(0.1),
+            color: Colors.deepPurple.withAlpha((0.1 * 255).round()),
             shape: const CircleBorder(),
           ),
           child: IconButton(
@@ -503,7 +561,9 @@ class _DashboardPageState extends State<DashboardPage> {
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 15),
-        ...recentTransactions.map((transaction) => _buildTransactionTile(transaction)),
+        ...recentTransactions.map(
+          (transaction) => _buildTransactionTile(transaction),
+        ),
       ],
     );
   }
@@ -517,7 +577,7 @@ class _DashboardPageState extends State<DashboardPage> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withAlpha((0.1 * 255).round()),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -544,9 +604,9 @@ class _DashboardPageState extends State<DashboardPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  transaction['type'] == 'sent' 
-                    ? 'Sent to ${transaction['recipient']}'
-                    : transaction['type'] == 'received'
+                  transaction['type'] == 'sent'
+                      ? 'Sent to ${transaction['recipient']}'
+                      : transaction['type'] == 'received'
                       ? 'Received from ${transaction['recipient']}'
                       : transaction['recipient'],
                   style: const TextStyle(
@@ -557,18 +617,12 @@ class _DashboardPageState extends State<DashboardPage> {
                 const SizedBox(height: 4),
                 Text(
                   '${transaction['amount']} → ${transaction['converted']}',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[600],
-                  ),
+                  style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   transaction['route'],
-                  style: TextStyle(
-                    fontSize: 10,
-                    color: Colors.grey[500],
-                  ),
+                  style: TextStyle(fontSize: 10, color: Colors.grey[500]),
                 ),
               ],
             ),
@@ -585,10 +639,7 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
               Text(
                 transaction['time'],
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey[500],
-                ),
+                style: TextStyle(fontSize: 12, color: Colors.grey[500]),
               ),
             ],
           ),
@@ -596,4 +647,60 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
     );
   }
-} 
+}
+
+class _FancyNavButton extends StatefulWidget {
+  final String label;
+  final VoidCallback onTap;
+  const _FancyNavButton({required this.label, required this.onTap});
+
+  @override
+  State<_FancyNavButton> createState() => _FancyNavButtonState();
+}
+
+class _FancyNavButtonState extends State<_FancyNavButton>
+    with SingleTickerProviderStateMixin {
+  double _scale = 1.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) => setState(() => _scale = 0.96),
+      onTapUp: (_) => setState(() => _scale = 1.0),
+      onTapCancel: () => setState(() => _scale = 1.0),
+      onTap: widget.onTap,
+      child: AnimatedScale(
+        scale: _scale,
+        duration: const Duration(milliseconds: 120),
+        curve: Curves.easeOut,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [AppColors.sapphire, AppColors.lavender],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(18),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.sapphire.withAlpha(30),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Text(
+            widget.label,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              letterSpacing: 0.2,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

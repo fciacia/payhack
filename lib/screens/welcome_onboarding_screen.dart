@@ -18,7 +18,7 @@ class WelcomeOnboardingScreen extends StatelessWidget {
                 width: 120,
                 height: 120,
                 decoration: BoxDecoration(
-                  color: Colors.deepPurple.withOpacity(0.1),
+                  color: Colors.deepPurple.withAlpha((0.1 * 255).round()),
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: const Icon(
@@ -40,10 +40,7 @@ class WelcomeOnboardingScreen extends StatelessWidget {
               const SizedBox(height: 16),
               const Text(
                 "Send money globally with the best FX rates and smart routing",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey,
-                ),
+                style: TextStyle(fontSize: 16, color: Colors.grey),
                 textAlign: TextAlign.center,
               ),
               const Spacer(),

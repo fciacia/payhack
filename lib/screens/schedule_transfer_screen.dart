@@ -17,7 +17,7 @@ class _ScheduleTransferScreenState extends State<ScheduleTransferScreen> {
     'Monthly',
     'Quarterly',
     'Annually',
-    'Custom...'
+    'Custom...',
   ];
 
   @override
@@ -26,7 +26,7 @@ class _ScheduleTransferScreenState extends State<ScheduleTransferScreen> {
       appBar: AppBar(
         title: const Text('Set Recurring Transfer'),
         backgroundColor: Colors.transparent,
-        foregroundColor: Theme.of(context).colorScheme.onBackground,
+        foregroundColor: Theme.of(context).colorScheme.onSurface,
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -38,46 +38,72 @@ class _ScheduleTransferScreenState extends State<ScheduleTransferScreen> {
               children: const [
                 CircleAvatar(
                   radius: 22,
-                  child: Text('M', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
+                  child: Text(
+                    'M',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                  ),
                 ),
                 SizedBox(width: 12),
-                Text('@MAMA', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                Text(
+                  '@MAMA',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
               ],
             ),
             const SizedBox(height: 30),
-            const Text('Amount', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+            const Text(
+              'Amount',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
             const SizedBox(height: 8),
             TextFormField(
               initialValue: '500',
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 prefixText: 'RM ',
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                contentPadding: const EdgeInsets.symmetric(
+                  vertical: 16,
+                  horizontal: 12,
+                ),
               ),
               enabled: false,
             ),
             const SizedBox(height: 30),
-            const Text('Frequency', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+            const Text(
+              'Frequency',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
             const SizedBox(height: 8),
             DropdownButtonFormField<String>(
               value: _selectedFrequency,
-              items: _frequencies.map((freq) => DropdownMenuItem(
-                value: freq,
-                child: Text(freq),
-              )).toList(),
+              items: _frequencies
+                  .map(
+                    (freq) => DropdownMenuItem(value: freq, child: Text(freq)),
+                  )
+                  .toList(),
               onChanged: (val) {
                 setState(() {
                   _selectedFrequency = val!;
                 });
               },
               decoration: InputDecoration(
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                contentPadding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                contentPadding: const EdgeInsets.symmetric(
+                  vertical: 4,
+                  horizontal: 12,
+                ),
               ),
             ),
             const SizedBox(height: 30),
-            const Text('FX Rate', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+            const Text(
+              'FX Rate',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
             RadioListTile<String>(
               value: 'Lock FX rate now',
               groupValue: _selectedFxOption,
@@ -114,7 +140,10 @@ class _ScheduleTransferScreenState extends State<ScheduleTransferScreen> {
                   elevation: 2,
                 ),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/recurring_transfer_confirmation');
+                  Navigator.pushNamed(
+                    context,
+                    '/recurring_transfer_confirmation',
+                  );
                 },
                 child: const Text(
                   'Set Recurring Transfer',
@@ -128,4 +157,4 @@ class _ScheduleTransferScreenState extends State<ScheduleTransferScreen> {
       ),
     );
   }
-} 
+}

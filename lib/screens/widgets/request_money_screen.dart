@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 class RequestMoneyScreen extends StatefulWidget {
+  const RequestMoneyScreen({super.key});
+
   @override
-  _RequestMoneyScreenState createState() => _RequestMoneyScreenState();
+  RequestMoneyScreenState createState() => RequestMoneyScreenState();
 }
 
-class _RequestMoneyScreenState extends State<RequestMoneyScreen> {
+class RequestMoneyScreenState extends State<RequestMoneyScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _messageController = TextEditingController();
@@ -18,6 +20,7 @@ class _RequestMoneyScreenState extends State<RequestMoneyScreen> {
     });
     // mock delay
     Future.delayed(Duration(seconds: 2), () {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Request sent to @${_usernameController.text}')),
       );
@@ -55,7 +58,9 @@ class _RequestMoneyScreenState extends State<RequestMoneyScreen> {
             ),
             TextField(
               controller: _messageController,
-              decoration: InputDecoration(labelText: 'Add a message / emoji (optional)'),
+              decoration: InputDecoration(
+                labelText: 'Add a message / emoji (optional)',
+              ),
             ),
             const SizedBox(height: 20),
             SizedBox(

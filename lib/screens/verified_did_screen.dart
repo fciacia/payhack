@@ -18,7 +18,7 @@ class VerifiedDIDScreen extends StatelessWidget {
                 width: 120,
                 height: 120,
                 decoration: BoxDecoration(
-                  color: Colors.green.withOpacity(0.1),
+                  color: Colors.green.withAlpha((0.1 * 255).round()),
                   borderRadius: BorderRadius.circular(60),
                 ),
                 child: const Icon(
@@ -40,10 +40,7 @@ class VerifiedDIDScreen extends StatelessWidget {
               const SizedBox(height: 16),
               const Text(
                 "Your identity has been successfully verified. You can now use all features of your global wallet.",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey,
-                ),
+                style: TextStyle(fontSize: 16, color: Colors.grey),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 40),
@@ -88,7 +85,9 @@ class VerifiedDIDScreen extends StatelessWidget {
                           icon: const Icon(Icons.copy, size: 16),
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('DID copied to clipboard!')),
+                              const SnackBar(
+                                content: Text('DID copied to clipboard!'),
+                              ),
                             );
                           },
                         ),

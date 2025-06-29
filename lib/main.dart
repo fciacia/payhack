@@ -4,7 +4,6 @@ import 'app_colors.dart';
 import 'package:device_preview/device_preview.dart';
 
 // Existing screens
-import 'screens/choose_recipient_screen.dart';
 import 'screens/my_qr_code_screen.dart';
 import 'screens/enter_amount_screen.dart';
 import 'screens/confirm_transfer_screen.dart';
@@ -21,14 +20,17 @@ import 'screens/verified_did_screen.dart';
 import 'screens/receive_funds_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/home_scaffold.dart';
+import 'screens/universal_qr_generator_screen.dart';
+import 'screens/qr_scanner_screen.dart';
+import 'screens/payment_result_screen.dart';
+import 'screens/send_flow_page.dart';
+import 'screens/recurring_transfer_screen.dart';
+import 'screens/chain_selection_screen.dart';
+import 'screens/bridge_status_screen.dart';
+import 'screens/gas_fee_comparison_screen.dart';
 
 void main() {
-  runApp(
-    DevicePreview(
-      enabled: true,
-      builder: (context) => const MyApp(),
-    ),
-  );
+  runApp(DevicePreview(enabled: true, builder: (context) => const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -36,7 +38,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final baseTextTheme = GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme);
+    final baseTextTheme = GoogleFonts.poppinsTextTheme(
+      Theme.of(context).textTheme,
+    );
 
     return MaterialApp(
       title: 'Send Money',
@@ -47,53 +51,75 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
           seedColor: AppColors.sapphire,
           primary: AppColors.sapphire,
-          background: AppColors.lace,
           surface: AppColors.lace,
           onPrimary: AppColors.lace,
-          onBackground: AppColors.midnight,
+          onSurface: AppColors.midnight,
           secondary: AppColors.lavender,
           tertiary: AppColors.petal,
         ),
         textTheme: baseTextTheme.copyWith(
-          bodyLarge: baseTextTheme.bodyLarge?.copyWith(color: AppColors.midnight),
-          bodyMedium: baseTextTheme.bodyMedium?.copyWith(color: AppColors.midnight),
-          titleLarge: baseTextTheme.titleLarge?.copyWith(color: AppColors.midnight, fontWeight: FontWeight.bold),
-          headlineSmall: baseTextTheme.headlineSmall?.copyWith(color: AppColors.midnight, fontWeight: FontWeight.bold),
+          bodyLarge: baseTextTheme.bodyLarge?.copyWith(
+            color: AppColors.midnight,
+          ),
+          bodyMedium: baseTextTheme.bodyMedium?.copyWith(
+            color: AppColors.midnight,
+          ),
+          titleLarge: baseTextTheme.titleLarge?.copyWith(
+            color: AppColors.midnight,
+            fontWeight: FontWeight.bold,
+          ),
+          headlineSmall: baseTextTheme.headlineSmall?.copyWith(
+            color: AppColors.midnight,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         appBarTheme: const AppBarTheme(
           backgroundColor: AppColors.midnight,
           foregroundColor: AppColors.lace,
           elevation: 0,
           centerTitle: true,
-          titleTextStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: AppColors.lace),
+          titleTextStyle: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+            color: AppColors.lace,
+          ),
         ),
         cardTheme: CardThemeData(
           color: AppColors.lace,
           elevation: 6,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-          shadowColor: AppColors.sapphire.withOpacity(0.08),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
+          shadowColor: AppColors.sapphire.withAlpha((0.08 * 255).round()),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
-            padding: MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 18)),
-            shape: MaterialStateProperty.all(
+            padding: WidgetStateProperty.all(
+              const EdgeInsets.symmetric(vertical: 18),
+            ),
+            shape: WidgetStateProperty.all(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
             ),
-            elevation: MaterialStateProperty.all(6),
-            backgroundColor: MaterialStateProperty.resolveWith<Color>((states) {
-              if (states.contains(MaterialState.pressed)) {
+            elevation: WidgetStateProperty.all(6),
+            backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
+              if (states.contains(WidgetState.pressed)) {
                 return AppColors.lavender;
               }
               return AppColors.sapphire;
             }),
-            foregroundColor: MaterialStateProperty.all(AppColors.lace),
-            overlayColor: MaterialStateProperty.all(AppColors.lavender.withOpacity(0.15)),
+            foregroundColor: WidgetStateProperty.all(AppColors.lace),
+            overlayColor: WidgetStateProperty.all(
+              AppColors.lavender.withAlpha((0.15 * 255).round()),
+            ),
           ),
         ),
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
-          fillColor: AppColors.bridalBlue.withOpacity(0.7),
-          contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+          fillColor: AppColors.bridalBlue.withAlpha((0.7 * 255).round()),
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 16,
+            horizontal: 16,
+          ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
             borderSide: const BorderSide(color: AppColors.lavender),
@@ -108,9 +134,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
         splashFactory: InkRipple.splashFactory,
-        highlightColor: AppColors.lavender.withOpacity(0.1),
+        highlightColor: AppColors.lavender.withAlpha((0.1 * 255).round()),
       ),
-      useInheritedMediaQuery: true,
       locale: DevicePreview.locale(context),
       builder: DevicePreview.appBuilder,
       initialRoute: '/welcome',
@@ -120,15 +145,20 @@ class MyApp extends StatelessWidget {
         '/connect_wallet': (context) => const ConnectWalletScreen(),
         '/ekyc_upload': (context) => const EKYCUploadScreen(),
         '/verified': (context) => const VerifiedDIDScreen(),
-        
+
         // Main flow
         '/': (context) => const HomeScaffold(),
+        '/send_flow': (context) => const SendFlowPage(),
+        '/chain_selection': (context) => ChainSelectionScreen(),
+        '/bridge_status': (context) => BridgeStatusScreen(),
+        '/gas_fee_comparison': (context) => GasFeeComparisonScreen(),
         '/my_qr_code': (context) => const MyQRCodeScreen(),
         '/enter_amount': (context) => const EnterAmountScreen(),
         '/confirm_transfer': (context) => const ConfirmTransferScreen(),
         '/schedule_transfer': (context) => const ScheduleTransferScreen(),
-        '/recurring_transfer_confirmation': (context) => const RecurringTransferConfirmationScreen(),
-        
+        '/recurring_transfer_confirmation': (context) =>
+            const RecurringTransferConfirmationScreen(),
+
         // Add-ons
         '/request_money': (context) => RequestMoneyScreen(),
         '/offline_mode': (context) => OfflineModeScreen(),
@@ -136,6 +166,21 @@ class MyApp extends StatelessWidget {
         // ✅ Newly added screens
         '/receive_funds': (context) => const ReceiveFundsScreen(),
         '/settings': (context) => const SettingsScreen(),
+        '/universal_qr': (context) => UniversalQRGeneratorScreen(),
+        '/qr_scanner': (context) => QRScannerScreen(),
+        '/payment_result_success': (context) => PaymentResultScreen(
+          type: PaymentResultType.success,
+          username: '@Felicia',
+          chain: 'Polygon',
+          amount: 'RM 500',
+        ),
+        '/payment_result_failure': (context) => PaymentResultScreen(
+          type: PaymentResultType.failure,
+          username: '@Felicia',
+          chain: 'Polygon',
+          amount: 'RM 500',
+        ),
+        '/recurring_transfer': (context) => const RecurringTransferScreen(),
       },
     );
   }

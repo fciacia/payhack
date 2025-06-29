@@ -17,7 +17,9 @@ class _ReceiveFundsScreenState extends State<ReceiveFundsScreen> {
       context: context,
       builder: (_) => AlertDialog(
         title: const Text("Receipt Confirmed"),
-        content: Text("You've received RM200 via $selectedOption.\n\n🪙 Smart Suggestion: Keep in Basket Coin? FX is volatile right now."),
+        content: Text(
+          "You've received RM200 via $selectedOption.\n\n🪙 Smart Suggestion: Keep in Basket Coin? FX is volatile right now.",
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -76,4 +78,4 @@ class _ReceiveFundsScreenState extends State<ReceiveFundsScreen> {
       ),
     );
   }
-} 
+}

@@ -22,7 +22,7 @@ class RecipientTile extends StatelessWidget {
       color: AppColors.lace,
       borderRadius: BorderRadius.circular(20),
       elevation: 4,
-      shadowColor: AppColors.sapphire.withOpacity(0.08),
+      shadowColor: AppColors.sapphire.withAlpha((0.08 * 255).round()),
       child: InkWell(
         borderRadius: BorderRadius.circular(20),
         onTap: onTap,
@@ -36,7 +36,12 @@ class RecipientTile extends StatelessWidget {
                   radius: 28,
                   backgroundImage: NetworkImage(avatarUrl),
                   backgroundColor: AppColors.petal,
-                  child: avatarUrl.isEmpty ? const FaIcon(FontAwesomeIcons.user, color: AppColors.sapphire) : null,
+                  child: avatarUrl.isEmpty
+                      ? const FaIcon(
+                          FontAwesomeIcons.user,
+                          color: AppColors.sapphire,
+                        )
+                      : null,
                 ),
               ),
               const SizedBox(width: 16),
@@ -45,15 +50,24 @@ class RecipientTile extends StatelessWidget {
                 children: [
                   Text(name, style: Theme.of(context).textTheme.titleLarge),
                   const SizedBox(height: 2),
-                  Text(username, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.sapphire)),
+                  Text(
+                    username,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyMedium?.copyWith(color: AppColors.sapphire),
+                  ),
                 ],
               ),
               const Spacer(),
-              const FaIcon(FontAwesomeIcons.chevronRight, size: 18, color: AppColors.lavender),
+              const FaIcon(
+                FontAwesomeIcons.chevronRight,
+                size: 18,
+                color: AppColors.lavender,
+              ),
             ],
           ),
         ),
       ),
     );
   }
-} 
+}

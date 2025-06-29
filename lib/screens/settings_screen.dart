@@ -43,7 +43,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ],
           const Divider(),
           const SizedBox(height: 10),
-          const Text("Language & Currency Settings", style: TextStyle(fontWeight: FontWeight.bold)),
+          const Text(
+            "Language & Currency Settings",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           DropdownButton<String>(
             value: selectedLanguage,
             items: const [
@@ -72,4 +75,4 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
-} 
+}

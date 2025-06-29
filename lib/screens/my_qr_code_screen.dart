@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:share_plus/share_plus.dart';
 
 class MyQRCodeScreen extends StatelessWidget {
   const MyQRCodeScreen({super.key});
@@ -12,7 +13,7 @@ class MyQRCodeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('My QR Code'),
         backgroundColor: Colors.transparent,
-        foregroundColor: Theme.of(context).colorScheme.onBackground,
+        foregroundColor: Theme.of(context).colorScheme.onSurface,
       ),
       body: Center(
         child: Padding(
@@ -26,10 +27,18 @@ class MyQRCodeScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Theme.of(context).colorScheme.secondary.withOpacity(0.5)),
+                  border: Border.all(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.secondary.withAlpha((0.5 * 255).round()),
+                  ),
                 ),
                 child: Center(
-                  child: Icon(Icons.qr_code_2, size: 150, color: Theme.of(context).colorScheme.primary),
+                  child: Icon(
+                    Icons.qr_code_2,
+                    size: 150,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
               ),
               const SizedBox(height: 30),
@@ -43,11 +52,16 @@ class MyQRCodeScreen extends StatelessWidget {
                 onPressed: () {
                   Clipboard.setData(const ClipboardData(text: username));
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Username copied to clipboard!')),
+                    const SnackBar(
+                      content: Text('Username copied to clipboard!'),
+                    ),
                   );
                 },
                 icon: const Icon(Icons.copy, size: 18),
-                label: const Text('Copy Username', style: TextStyle(fontWeight: FontWeight.bold)),
+                label: const Text(
+                  'Copy Username',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 style: TextButton.styleFrom(
                   foregroundColor: Theme.of(context).colorScheme.primary,
                 ),
@@ -56,6 +70,31 @@ class MyQRCodeScreen extends StatelessWidget {
           ),
         ),
       ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.fromLTRB(24, 0, 24, 32),
+        child: SizedBox(
+          width: double.infinity,
+          child: ElevatedButton.icon(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
+              elevation: 2,
+            ),
+            onPressed: () {
+              Share.share('Send me money on PayHack! My username is $username');
+            },
+            icon: const Icon(Icons.share),
+            label: const Text(
+              'Share',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+      ),
     );
   }
-} 
+}
