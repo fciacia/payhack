@@ -41,8 +41,8 @@ class _SignUpBodyState extends State<_SignUpBody> {
   Future<void> _handleGoogleSignIn() async {
     setState(() => _isGoogleLoading = true);
     try {
-      final GoogleSignIn _googleSignIn = GoogleSignIn();
-      final account = await _googleSignIn.signIn();
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      final account = await googleSignIn.signIn();
       if (account != null) {
         if (mounted) {
           Navigator.pushNamed(context, '/personal_info');
@@ -93,7 +93,7 @@ class _SignUpBodyState extends State<_SignUpBody> {
                     borderRadius: BorderRadius.circular(18),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.04),
+                        color: Colors.black.withAlpha((0.04 * 255).round()),
                         blurRadius: 16,
                         offset: const Offset(0, 6),
                       ),

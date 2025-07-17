@@ -159,4 +159,26 @@ class _HomeScaffoldState extends State<HomeScaffold> {
       ),
     );
   }
+
+  // In the navigation buttons section, add a button for Green Merchant Discovery
+  Widget _buildNavButton(IconData icon, String label, String route) {
+    return InkWell(
+      onTap: () => Navigator.pushNamed(context, route),
+      borderRadius: BorderRadius.circular(18),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, color: Colors.deepPurple, size: 26),
+            const SizedBox(height: 2),
+            Text(
+              label,
+              style: const TextStyle(fontSize: 12, color: Colors.deepPurple),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

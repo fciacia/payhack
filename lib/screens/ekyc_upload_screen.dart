@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'eco_pulse_opt_in_screen.dart';
 
 class EKYCUploadScreen extends StatefulWidget {
   const EKYCUploadScreen({super.key});
@@ -127,7 +128,12 @@ class _EKYCUploadScreenState extends State<EKYCUploadScreen> {
                     elevation: 2,
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/verified');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const EcoPulseOptInScreen(),
+                      ),
+                    );
                   },
                   child: const Text(
                     "Continue",

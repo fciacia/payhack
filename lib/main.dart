@@ -16,7 +16,6 @@ import 'screens/offline_mode_screen.dart';
 import 'screens/welcome_onboarding_screen.dart';
 import 'screens/connect_wallet_screen.dart';
 import 'screens/ekyc_upload_screen.dart';
-import 'screens/verified_did_screen.dart';
 import 'screens/receive_funds_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/home_scaffold.dart';
@@ -32,6 +31,8 @@ import 'screens/sign_up_screen.dart';
 import 'screens/personal_info_screen.dart';
 import 'screens/identity_verified_screen.dart';
 import 'screens/identity_verification_screen.dart';
+import 'screens/educational_modules_screen.dart';
+import 'screens/choose_recipient_screen.dart'; // For GreenMerchantDiscoveryScreen
 
 void main() {
   runApp(DevicePreview(enabled: true, builder: (context) => const MyApp()));
@@ -189,6 +190,8 @@ class MyApp extends StatelessWidget {
         '/personal_info': (context) => const PersonalInfoScreen(),
         '/identity_verification': (context) =>
             const IdentityVerificationScreen(),
+        '/educational_modules': (context) => const EducationalModulesScreen(),
+        '/green_merchants': (context) => const GreenMerchantDiscoveryScreen(),
       },
     );
   }
