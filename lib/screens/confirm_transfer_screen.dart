@@ -11,7 +11,7 @@ class ConfirmTransferScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Confirm Transfer'),
         backgroundColor: Colors.transparent,
-        foregroundColor: Theme.of(context).colorScheme.onBackground,
+        foregroundColor: Theme.of(context).colorScheme.onSurface,
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -26,24 +26,37 @@ class ConfirmTransferScreen extends StatelessWidget {
                     tag: 'recipient-avatar',
                     child: CircleAvatar(
                       radius: 35,
-                      backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                      child: const Text('F', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+                      backgroundColor: Theme.of(
+                        context,
+                      ).colorScheme.primary.withAlpha((0.1 * 255).round()),
+                      child: const Text(
+                        'F',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 12),
-                  const Text('@Felicia', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  const Text(
+                    '@Felicia',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
             ),
             const SizedBox(height: 30),
             const Text(
               'Transfer summary',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.grey),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Colors.grey,
+              ),
             ),
             const SizedBox(height: 10),
-            GlassCard(
-              child: _SummaryCardContent(),
-            ),
+            GlassCard(child: _SummaryCardContent()),
             const Spacer(),
             _buildGradientButton(context),
             const SizedBox(height: 10),
@@ -62,13 +75,18 @@ class ConfirmTransferScreen extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
         gradient: LinearGradient(
-          colors: [Theme.of(context).colorScheme.primary, Theme.of(context).colorScheme.secondary],
+          colors: [
+            Theme.of(context).colorScheme.primary,
+            Theme.of(context).colorScheme.secondary,
+          ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.18),
+            color: Theme.of(
+              context,
+            ).colorScheme.primary.withAlpha((0.18 * 255).round()),
             blurRadius: 12,
             offset: const Offset(0, 6),
           ),
@@ -84,11 +102,19 @@ class ConfirmTransferScreen extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const FaIcon(FontAwesomeIcons.glassCheers, color: Colors.white, size: 22),
+              const FaIcon(
+                FontAwesomeIcons.champagneGlasses,
+                color: Colors.white,
+                size: 22,
+              ),
               const SizedBox(width: 12),
               const Text(
                 'Pay using glass transaction?',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
             ],
           ),
@@ -103,7 +129,9 @@ class ConfirmTransferScreen extends StatelessWidget {
       builder: (context) {
         return AlertDialog(
           title: const Text('Transaction Route'),
-          content: const Text('Optimize your transaction route for best rates and speed.'),
+          content: const Text(
+            'Optimize your transaction route for best rates and speed.',
+          ),
           actions: [
             TextButton(
               onPressed: () {
@@ -132,13 +160,29 @@ class ConfirmTransferScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildRouteStep(context, 'Polygon', 'Initiate transaction on Polygon network'),
+              _buildRouteStep(
+                context,
+                'Polygon',
+                'Initiate transaction on Polygon network',
+              ),
               _buildArrow(context),
-              _buildRouteStep(context, 'Chainlink FX Oracle', 'Get real-time FX rate'),
+              _buildRouteStep(
+                context,
+                'Chainlink FX Oracle',
+                'Get real-time FX rate',
+              ),
               _buildArrow(context),
-              _buildRouteStep(context, 'Avalanche', 'Bridge and process payment'),
+              _buildRouteStep(
+                context,
+                'Avalanche',
+                'Bridge and process payment',
+              ),
               _buildArrow(context),
-              _buildRouteStep(context, 'Bank', "Funds delivered to recipient's bank"),
+              _buildRouteStep(
+                context,
+                'Bank',
+                "Funds delivered to recipient's bank",
+              ),
             ],
           ),
           actions: [
@@ -152,7 +196,11 @@ class ConfirmTransferScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildRouteStep(BuildContext context, String title, String explanation) {
+  Widget _buildRouteStep(
+    BuildContext context,
+    String title,
+    String explanation,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Column(
@@ -162,7 +210,10 @@ class ConfirmTransferScreen extends StatelessWidget {
           if (explanation.isNotEmpty)
             Padding(
               padding: const EdgeInsets.only(left: 8.0, top: 2.0),
-              child: Text(explanation, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+              child: Text(
+                explanation,
+                style: const TextStyle(fontSize: 12, color: Colors.grey),
+              ),
             ),
         ],
       ),
@@ -172,7 +223,15 @@ class ConfirmTransferScreen extends StatelessWidget {
   Widget _buildArrow(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2.0),
-      child: Center(child: Text('↓', style: TextStyle(fontSize: 18, color: Theme.of(context).colorScheme.primary))),
+      child: Center(
+        child: Text(
+          '↓',
+          style: TextStyle(
+            fontSize: 18,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        ),
+      ),
     );
   }
 }
@@ -182,23 +241,43 @@ class _SummaryCardContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _buildSummaryRow(context, 'Amount:', 'RM 500', icon: FontAwesomeIcons.moneyBillWave),
+        _buildSummaryRow(
+          context,
+          'Amount:',
+          'RM 500',
+          icon: FontAwesomeIcons.moneyBillWave,
+        ),
         const SizedBox(height: 20),
-        _buildSummaryRow(context, 'Will receive:', 'USD 108.50', icon: FontAwesomeIcons.wallet),
+        _buildSummaryRow(
+          context,
+          'Will receive:',
+          'USD 108.50',
+          icon: FontAwesomeIcons.wallet,
+        ),
         const SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: [
-                const FaIcon(FontAwesomeIcons.chartLine, size: 20, color: Colors.deepPurple),
+                const FaIcon(
+                  FontAwesomeIcons.chartLine,
+                  size: 20,
+                  color: Colors.deepPurple,
+                ),
                 const SizedBox(width: 15),
-                const Text('FX Rate:', style: TextStyle(fontSize: 16, color: Colors.grey)),
+                const Text(
+                  'FX Rate:',
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                ),
               ],
             ),
             Row(
               children: [
-                const Text('1 RM = 0.217 USD', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                const Text(
+                  '1 RM = 0.217 USD',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
                 const SizedBox(width: 5),
                 GestureDetector(
                   onTap: () {
@@ -206,7 +285,9 @@ class _SummaryCardContent extends StatelessWidget {
                       context: context,
                       builder: (context) => AlertDialog(
                         title: const Text('FX Rate Information'),
-                        content: const Text("You're saving RM12 vs bank FX rate"),
+                        content: const Text(
+                          "You're saving RM12 vs bank FX rate",
+                        ),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.of(context).pop(),
@@ -216,7 +297,11 @@ class _SummaryCardContent extends StatelessWidget {
                       ),
                     );
                   },
-                  child: const Icon(Icons.info_outline, size: 18, color: Colors.grey),
+                  child: const Icon(
+                    Icons.info_outline,
+                    size: 18,
+                    color: Colors.grey,
+                  ),
                 ),
               ],
             ),
@@ -226,19 +311,34 @@ class _SummaryCardContent extends StatelessWidget {
     );
   }
 
-  Widget _buildSummaryRow(BuildContext context, String title, String value, {required IconData icon}) {
+  Widget _buildSummaryRow(
+    BuildContext context,
+    String title,
+    String value, {
+    required IconData icon,
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Row(
           children: [
-            FaIcon(icon, color: Theme.of(context).colorScheme.primary, size: 20),
+            FaIcon(
+              icon,
+              color: Theme.of(context).colorScheme.primary,
+              size: 20,
+            ),
             const SizedBox(width: 15),
-            Text(title, style: TextStyle(fontSize: 16, color: Colors.grey[600])),
+            Text(
+              title,
+              style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+            ),
           ],
         ),
-        Text(value, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        Text(
+          value,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
       ],
     );
   }
-} 
+}

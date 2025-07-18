@@ -6,14 +6,16 @@ class RecurringTransferConfirmationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final nextTransferDate = DateFormat('MMMM d, yyyy').format(DateTime.now().add(const Duration(days: 30)));
+    final nextTransferDate = DateFormat(
+      'MMMM d, yyyy',
+    ).format(DateTime.now().add(const Duration(days: 30)));
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Recurring Transfer Set!'),
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
-        foregroundColor: Theme.of(context).colorScheme.onBackground,
+        foregroundColor: Theme.of(context).colorScheme.onSurface,
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -21,7 +23,11 @@ class RecurringTransferConfirmationScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 20),
-            Icon(Icons.check_circle_outline, color: Theme.of(context).colorScheme.primary, size: 80),
+            Icon(
+              Icons.check_circle_outline,
+              color: Theme.of(context).colorScheme.primary,
+              size: 80,
+            ),
             const SizedBox(height: 20),
             const Text(
               "Your recurring transfer to @MAMA for RM 500 every 1st of the month has been set.",
@@ -43,7 +49,11 @@ class RecurringTransferConfirmationScreen extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    '/',
+                    (route) => false,
+                  );
                 },
                 child: const Text(
                   'Done',
@@ -66,10 +76,10 @@ class RecurringTransferConfirmationScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.05),
+            color: Colors.grey.withAlpha((0.05 * 255).round()),
             blurRadius: 20,
             offset: const Offset(0, 5),
-          )
+          ),
         ],
       ),
       child: Column(
@@ -93,8 +103,11 @@ class RecurringTransferConfirmationScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(title, style: TextStyle(fontSize: 16, color: Colors.grey[600])),
-        Text(value, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        Text(
+          value,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
       ],
     );
   }
-} 
+}

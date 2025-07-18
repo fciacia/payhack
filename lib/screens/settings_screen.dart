@@ -8,123 +8,71 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool _advancedMode = false;
-  String _selectedLanguage = 'English';
-  String _selectedCurrency = 'USD';
+  bool advancedMode = false;
+  String selectedLanguage = 'English';
+  String selectedCurrency = 'MYR';
   bool _isBusiness = false;
-
-  final List<String> _languages = ['English', 'Bahasa Melayu', 'Mandarin'];
-  final List<String> _currencies = ['USD', 'MYR', 'YUAN'];
-
-  // TODO: Sample values nia
-  String network = "Ethereum Mainnet";
-  String gasFee = "0.0021 ETH";
-  String contractHash = "0xabc123...def678";
-  String didCredential = "DID:payhack:xyz7890";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Settings', style: TextStyle(fontWeight: FontWeight.bold)),
-        centerTitle: false,
-        elevation: 0,
-      ),
+      appBar: AppBar(title: const Text("Settings")),
       body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.all(20),
         children: [
-          const SizedBox(height: 26),
-          // Advanced Mode Section
-          SwitchListTile.adaptive(
-            title: const Text("Advanced mode"),
-            subtitle: const Text("Show blockchain details and fees"),
-            value: _advancedMode,
-            onChanged: (value) {
-              setState(() {
-                _advancedMode = value;
-              });
-            },
+          SwitchListTile(
+            title: const Text("Advanced Mode"),
+            subtitle: const Text("Toggle blockchain-level visibility"),
+            value: advancedMode,
+            onChanged: (val) => setState(() => advancedMode = val),
           ),
-          if (_advancedMode)
-            Card(
-              elevation: 2,
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SettingDetailRow(label: "Blockchain Network", value: network),
-                    SettingDetailRow(label: "Gas Fees", value: gasFee),
-                    SettingDetailRow(label: "Smart Contract", value: contractHash),
-                  ],
-                ),
-              ),
+          if (advancedMode) ...[
+            const Divider(),
+            const ListTile(
+              title: Text("Blockchain Network"),
+              subtitle: Text("Avalanche Mainnet"),
             ),
-          const Divider(height: 32),
-          // Language & Currency Settings
-          Text("Language & Currency",
-              style: Theme.of(context).textTheme.titleSmall),
-          ListTile(
-            title: const Text("Language"),
-            trailing: DropdownButton<String>(
-              value: _selectedLanguage,
-              underline: Container(),
-              items: _languages
-                  .map((lang) => DropdownMenuItem(
-                        value: lang,
-                        child: Text(lang),
-                      ))
-                  .toList(),
-              onChanged: (val) => setState(() => _selectedLanguage = val!),
+            const ListTile(
+              title: Text("Gas Fee Estimate"),
+              subtitle: Text("0.00021 AVAX (~RM 0.30)"),
             ),
+            const ListTile(
+              title: Text("Smart Contract Hash"),
+              subtitle: Text("0x7F5A...E12b"),
+              isThreeLine: true,
+            ),
+          ],
+          const Divider(),
+          const SizedBox(height: 10),
+          const Text(
+            "Language & Currency Settings",
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          ListTile(
-            title: const Text("Default Currency"),
-            trailing: DropdownButton<String>(
-              value: _selectedCurrency,
-              underline: Container(),
-              items: _currencies
-                  .map((cur) => DropdownMenuItem(
-                        value: cur,
-                        child: Text(cur),
-                      ))
-                  .toList(),
-              onChanged: (val) => setState(() => _selectedCurrency = val!),
-            ),
+          DropdownButton<String>(
+            value: selectedLanguage,
+            items: const [
+              DropdownMenuItem(value: 'English', child: Text("English")),
+              DropdownMenuItem(value: 'Malay', child: Text("Malay")),
+            ],
+            onChanged: (val) => setState(() => selectedLanguage = val!),
           ),
-          const Divider(height: 32),
-          // DID credentials viewer
+          DropdownButton<String>(
+            value: selectedCurrency,
+            items: const [
+              DropdownMenuItem(value: 'MYR', child: Text("MYR")),
+              DropdownMenuItem(value: 'USD', child: Text("USD")),
+              DropdownMenuItem(value: 'JPY', child: Text("JPY")),
+            ],
+            onChanged: (val) => setState(() => selectedCurrency = val!),
+          ),
+          const Divider(),
+          const SizedBox(height: 10),
           ListTile(
             title: const Text("My DID Credentials"),
-            subtitle: Text(didCredential),
-            trailing: IconButton(
-              icon: const Icon(Icons.copy),
-              onPressed: () {
-                  // TODO: can somehow copy to clipboard
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Copied to clipboard!')),
-                );
-              },
-            ),
-            onTap: () {
-                // TODO: add more details
-              showDialog(
-                context: context,
-                builder: (_) => AlertDialog(
-                  title: const Text('DID Credentials'),
-                  content: Text(didCredential),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text('Close'),
-                    )
-                  ],
-                ),
-              );
-            },
+            subtitle: const Text("Decentralized ID: did:pay:id:0x9a...2fF3"),
+            trailing: const Icon(Icons.vpn_key),
           ),
-          const Divider(height: 32),
+          const Divider(),
           // TODO: if user no business account, show option to create one
           SwitchListTile.adaptive(
             title: Text(_isBusiness
@@ -139,24 +87,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
               });
             },
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class SettingDetailRow extends StatelessWidget {
-  final String label, value;
-  const SettingDetailRow({required this.label, required this.value, super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 3.0),
-      child: Row(
-        children: [
-          Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
-          const SizedBox(width: 12),
-          Expanded(child: Text(value, style: const TextStyle(color: Colors.blueGrey))),
         ],
       ),
     );
