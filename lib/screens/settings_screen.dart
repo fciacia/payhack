@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:payhack_app/screens/register_bizid_screen.dart';
+
+// notifiers
+import '../state/settings_notifier.dart';
+
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -19,6 +24,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final settings = context.watch<SettingsNotifier>();
+
     return Scaffold(
       appBar: AppBar(title: const Text("Settings")),
       body: ListView(
@@ -30,6 +37,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
             value: advancedMode,
             onChanged: (val) => setState(() => advancedMode = val),
           ),
+          const Divider(),
+          // TODO: if user no business account, show option to create one
+          SwitchListTile(
+            title: Text(settings.isBusiness
+                ? "Business Account ON"
+                : "Switch to business user / Create business account"),
+            subtitle: Text(settings.isBusiness
+                ? "You are now using a business profile."
+                : "Unlock more features for companies/merchants."),
+            value: settings.isBusiness,
+            onChanged: (v) => context.read<SettingsNotifier>().toggleBusiness(v),
           if (advancedMode) ...[
             const Divider(),
             const ListTile(
@@ -76,7 +94,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             subtitle: const Text("Decentralized ID: did:pay:id:0x9a...2fF3"),
             trailing: const Icon(Icons.vpn_key),
           ),
-
           // Add button to Register Business ID
           const Divider(),
           const SizedBox(height: 10),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../state/settings_notifier.dart';
 import '../app_colors.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -509,6 +511,8 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Widget _buildNavigationButtons() {
+    final isBusiness = context.watch<SettingsNotifier>().isBusiness;
+
     return Wrap(
       alignment: WrapAlignment.center,
       spacing: 24,
@@ -528,6 +532,9 @@ class _DashboardPageState extends State<DashboardPage> {
         _buildNavButton(Icons.request_page, 'Request Money', '/request_money'),
         _buildNavButton(Icons.qr_code_scanner, 'Scan QR', '/my_qr_code'),
         _buildNavButton(Icons.wifi_off, 'Offline Mode', '/offline_mode'),
+        if (isBusiness) ...[
+          _buildNavButton(Icons.receipt_long, 'E-Invoicing', '/einvoicing_screen'),
+        ],
       ],
     );
   }
