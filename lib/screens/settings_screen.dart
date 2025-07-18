@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:payhack_app/screens/register_bizid_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -11,6 +12,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool advancedMode = false;
   String selectedLanguage = 'English';
   String selectedCurrency = 'MYR';
+
+  // final List<Widget> _pages = [
+  //   RegisterBizIDScreen(),
+  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +75,33 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: const Text("My DID Credentials"),
             subtitle: const Text("Decentralized ID: did:pay:id:0x9a...2fF3"),
             trailing: const Icon(Icons.vpn_key),
+          ),
+
+          // Add button to Register Business ID
+          const Divider(),
+          const SizedBox(height: 10),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const RegisterBizIDScreen()),
+              );
+            },
+
+            icon: const Icon(Icons.business),
+            label: const Text("Register Business ID"),
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            "Register and verify your business identification for enhanced features",
+            style: TextStyle(fontSize: 12, color: Colors.grey),
+            textAlign: TextAlign.center,
           ),
         ],
       ),

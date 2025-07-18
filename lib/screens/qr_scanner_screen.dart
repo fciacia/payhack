@@ -1,5 +1,216 @@
 import 'package:flutter/material.dart';
 
+class Section extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          width: 358,
+          height: 212,
+          decoration: ShapeDecoration(
+            color: Colors.white.withValues(alpha: 0.05),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+          ),
+          child: Stack(
+            children: [
+              Positioned(
+                left: 24,
+                top: 24,
+                child: Container(
+                  width: 310,
+                  height: 24,
+                  decoration: ShapeDecoration(
+                    color: Colors.black.withValues(alpha: 0),
+                    shape: RoundedRectangleBorder(),
+                  ),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        left: 0,
+                        top: 3,
+                        child: Icon(
+                          Icons.lightbulb_outline,
+                          size: 16,
+                          color: Colors.white.withValues(alpha: 0.7),
+                        ),
+                      ),
+                      Positioned(
+                        left: 20,
+                        top: 0.56,
+                        child: SizedBox(
+                          width: 102,
+                          height: 24,
+                          child: Text(
+                            'Scanning Tips',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontFamily: 'Roboto',
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 24,
+                top: 64,
+                child: Container(
+                  width: 310,
+                  height: 124,
+                  decoration: ShapeDecoration(
+                    color: Colors.black.withValues(alpha: 0),
+                    shape: RoundedRectangleBorder(),
+                  ),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        left: 0,
+                        top: 0,
+                        child: Container(
+                          width: 310,
+                          height: 40,
+                          decoration: ShapeDecoration(
+                            color: Colors.black.withValues(alpha: 0),
+                            shape: RoundedRectangleBorder(),
+                          ),
+                          child: Stack(
+                            children: [
+                              Positioned(
+                                left: 0,
+                                top: 3.50,
+                                child: Icon(
+                                  Icons.phone_android,
+                                  size: 12,
+                                  color: Colors.white.withValues(alpha: 0.7),
+                                ),
+                              ),
+                              Positioned(
+                                left: 22.50,
+                                top: 1.60,
+                                child: SizedBox(
+                                  width: 256,
+                                  height: 40,
+                                  child: Text(
+                                    'Hold your device steady and ensure good lighting',
+                                    style: TextStyle(
+                                      color: Colors.white.withValues(alpha: 0.70),
+                                      fontSize: 14,
+                                      fontFamily: 'Roboto',
+                                      fontWeight: FontWeight.w400,
+                                      height: 1.43,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 0,
+                        top: 52,
+                        child: Container(
+                          width: 310,
+                          height: 40,
+                          decoration: ShapeDecoration(
+                            color: Colors.black.withValues(alpha: 0),
+                            shape: RoundedRectangleBorder(),
+                          ),
+                          child: Stack(
+                            children: [
+                              Positioned(
+                                left: 0,
+                                top: 3.50,
+                                child: Icon(
+                                  Icons.crop_free,
+                                  size: 12,
+                                  color: Colors.white.withValues(alpha: 0.7),
+                                ),
+                              ),
+                              Positioned(
+                                left: 22.50,
+                                top: 1.60,
+                                child: SizedBox(
+                                  width: 215,
+                                  height: 40,
+                                  child: Text(
+                                    'Keep the QR code within the frame boundaries',
+                                    style: TextStyle(
+                                      color: Colors.white.withValues(alpha: 0.70),
+                                      fontSize: 14,
+                                      fontFamily: 'Roboto',
+                                      fontWeight: FontWeight.w400,
+                                      height: 1.43,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 0,
+                        top: 104,
+                        child: Container(
+                          width: 310,
+                          height: 20,
+                          decoration: ShapeDecoration(
+                            color: Colors.black.withValues(alpha: 0),
+                            shape: RoundedRectangleBorder(),
+                          ),
+                          child: Stack(
+                            children: [
+                              Positioned(
+                                left: 0,
+                                top: 3.50,
+                                child: Icon(
+                                  Icons.cleaning_services,
+                                  size: 12,
+                                  color: Colors.white.withValues(alpha: 0.7),
+                                ),
+                              ),
+                              Positioned(
+                                left: 22.50,
+                                top: -0.20,
+                                child: SizedBox(
+                                  width: 253,
+                                  height: 20,
+                                  child: Text(
+                                    'Clean your camera lens for better results',
+                                    style: TextStyle(
+                                      color: Colors.white.withValues(alpha: 0.70),
+                                      fontSize: 14,
+                                      fontFamily: 'Roboto',
+                                      fontWeight: FontWeight.w400,
+                                      height: 1.43,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class QRScannerScreen extends StatefulWidget {
   const QRScannerScreen({super.key});
 
@@ -11,6 +222,7 @@ class _QRScannerScreenState extends State<QRScannerScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
+  bool _showTips = false;
 
   @override
   void initState() {
@@ -31,6 +243,14 @@ class _QRScannerScreenState extends State<QRScannerScreen>
     super.dispose();
   }
 
+  void _chooseFromGallery() {
+    // Add your gallery selection logic here
+    print('Opening gallery...');
+    // You can use image_picker package:
+    // final ImagePicker picker = ImagePicker();
+    // final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,6 +263,16 @@ class _QRScannerScreenState extends State<QRScannerScreen>
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(_showTips ? Icons.close : Icons.help_outline),
+            onPressed: () {
+              setState(() {
+                _showTips = !_showTips;
+              });
+            },
+          ),
+        ],
       ),
       body: Stack(
         children: [
@@ -129,17 +359,66 @@ class _QRScannerScreenState extends State<QRScannerScreen>
               ],
             ),
           ),
-          // Bottom instructions
+          // Scanning Tips Section
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+            bottom: _showTips ? 80 : -240,
+            left: 16,
+            right: 16,
+            child: Section(),
+          ),
+          // Bottom section with instructions and gallery button
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
-              padding: const EdgeInsets.only(bottom: 48.0),
-              child: Text(
-                'Align the QR code within the frame',
-                style: TextStyle(
-                  color: Colors.white.withAlpha((0.85 * 255).round()),
-                  fontSize: 16,
-                ),
+              padding: const EdgeInsets.only(bottom: 20.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Instructions (only show when tips are hidden)
+                  if (!_showTips)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 24.0),
+                      child: Text(
+                        'Align the QR code within the frame',
+                        style: TextStyle(
+                          color: Colors.white.withAlpha((0.85 * 255).round()),
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  // Gallery button
+                  ElevatedButton.icon(
+                    onPressed: _chooseFromGallery,
+                    icon: const Icon(
+                      Icons.photo_library,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                    label: const Text(
+                      'Choose from Gallery',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white.withAlpha((0.15 * 255).round()),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24),
+                        side: BorderSide(
+                          color: Colors.white.withAlpha((0.25 * 255).round()),
+                          width: 1,
+                        ),
+                      ),
+                      elevation: 0,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
