@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'home_scaffold.dart';
+import 'behavioral_biometrics_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
@@ -325,6 +326,37 @@ class _SignUpBodyState extends State<_SignUpBody> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => const HomeScaffold(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 18),
+                // Behavioral Biometrics Demo button
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    icon: const Icon(Icons.fingerprint, color: Colors.deepPurple, size: 22),
+                    label: const Text(
+                      'Try Behavioral Biometrics',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.deepPurple,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: Colors.deepPurple, width: 1.5),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const BehavioralBiometricsScreen(),
                         ),
                       );
                     },

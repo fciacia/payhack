@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../app_colors.dart';
+import 'package:provider/provider.dart';
+import '../state/settings_notifier.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -274,6 +276,45 @@ class _DashboardPageState extends State<DashboardPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 10),
+            // E-Invoicing Card/Button
+            Card(
+              color: Colors.deepPurple[50],
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              child: ListTile(
+                leading: const Icon(Icons.receipt_long, color: Colors.deepPurple, size: 32),
+                title: const Text('E-Invoicing', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                subtitle: const Text('Create and manage your business invoices'),
+                trailing: const Icon(Icons.arrow_forward_ios, color: Colors.deepPurple),
+                onTap: () => Navigator.pushNamed(context, '/einvoicing_screen'),
+              ),
+            ),
+            const SizedBox(height: 10),
+            // Transaction History Card/Button
+            Card(
+              color: Colors.blue[50],
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              child: ListTile(
+                leading: const Icon(Icons.history, color: Colors.blue, size: 32),
+                title: const Text('Transaction History', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                subtitle: const Text('View your past transactions'),
+                trailing: const Icon(Icons.arrow_forward_ios, color: Colors.blue),
+                onTap: () => Navigator.pushNamed(context, '/transaction_history'),
+              ),
+            ),
+            const SizedBox(height: 10),
+            // Transaction Invoice Card/Button
+            Card(
+              color: Colors.green[50],
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              child: ListTile(
+                leading: const Icon(Icons.description, color: Colors.green, size: 32),
+                title: const Text('Transaction Invoice', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                subtitle: const Text('View your transaction invoices'),
+                trailing: const Icon(Icons.arrow_forward_ios, color: Colors.green),
+                onTap: () => Navigator.pushNamed(context, '/einvoicing_screen'),
+              ),
+            ),
+            const SizedBox(height: 10),
             // TEMP: Dev navigation buttons
             // Remove the following block (the horizontal row of dev navigation buttons):
             // Container(
@@ -409,7 +450,7 @@ class _DashboardPageState extends State<DashboardPage> {
               fontSize: 18,
               fontWeight: FontWeight.bold,
               color: asset['color'],
-            ),
+          ),
           ),
           const SizedBox(height: 8),
           // Balance
@@ -1153,26 +1194,25 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Widget _buildNavigationButtons() {
-    return Wrap(
-      alignment: WrapAlignment.center,
-      spacing: 24,
-      runSpacing: 16,
-      children: [
+    final navButtons = [
         _buildNavButton(Icons.send, 'Send Money', '/send_flow'),
-        _buildNavButton(
-          Icons.repeat,
-          'Recurring Transfer',
-          '/recurring_transfer',
-        ),
-        _buildNavButton(
-          Icons.account_balance_wallet,
-          'Receive Money',
-          '/receive_funds',
-        ),
+      _buildNavButton(Icons.repeat, 'Recurring Transfer', '/recurring_transfer'),
+      _buildNavButton(Icons.account_balance_wallet, 'Receive Money', '/receive_funds'),
         _buildNavButton(Icons.request_page, 'Request Money', '/request_money'),
         _buildNavButton(Icons.qr_code_scanner, 'Scan QR', '/my_qr_code'),
         _buildNavButton(Icons.wifi_off, 'Offline Mode', '/offline_mode'),
-      ],
+    ];
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: GridView.count(
+        crossAxisCount: 3,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        mainAxisSpacing: 18,
+        crossAxisSpacing: 8,
+        childAspectRatio: 0.95,
+        children: navButtons,
+      ),
     );
   }
 
@@ -1757,4 +1797,398 @@ class _EcoTagChips extends StatelessWidget {
           .toList(),
     );
   }
+}
+
+// --- New DashboardPage (add-on, do not remove old one) ---
+class DashboardPageV2 extends StatefulWidget {
+  const DashboardPageV2({super.key});
+
+  @override
+  State<DashboardPageV2> createState() => _DashboardPageV2State();
+}
+
+class _DashboardPageV2State extends State<DashboardPageV2> {
+  String selectedCurrency = 'JPY';
+  String username = '@username';
+  bool showOriginalCurrency = false;
+
+  final List<Map<String, dynamic>> walletAssets = [
+    {
+      'name': 'MYR',
+      'balance': 'RM100,000,000',
+      'icon': Icons.attach_money,
+      'color': Colors.green,
+      'trend': 'up',
+    },
+    {
+      'name': 'USD',
+      'balance': ' 27,000',
+      'icon': Icons.attach_money,
+      'color': Colors.blue,
+      'trend': 'up',
+    },
+    {
+      'name': 'USDT',
+      'balance': '10,000',
+      'icon': Icons.currency_bitcoin,
+      'color': Colors.teal,
+      'trend': 'down',
+    },
+    {
+      'name': 'Gold',
+      'balance': '50 oz',
+      'icon': Icons.monetization_on,
+      'color': Colors.amber,
+      'trend': 'up',
+    },
+    {
+      'name': 'Basket',
+      'balance': '1,000',
+      'icon': Icons.shopping_basket,
+      'color': Colors.purple,
+      'trend': 'stable',
+    },
+  ];
+
+  final List<Map<String, dynamic>> recentTransactions = [
+    {
+      'type': 'sent',
+      'recipient': '@Felicia',
+      'amount': 'RM500',
+      'converted': 'USD 108.50',
+      'route': 'Polygon → Chainlink → Avalanche → Bank',
+      'time': '2 hours ago',
+      'icon': Icons.send,
+      'color': Colors.red,
+    },
+    {
+      'type': 'received',
+      'recipient': '@200',
+      'amount': 'RM200',
+      'converted': 'JPY 30,000',
+      'route': 'Bank → Avalanche',
+      'time': '1 day ago',
+      'icon': Icons.call_received,
+      'color': Colors.green,
+    },
+    {
+      'type': 'converted',
+      'recipient': 'MYR → USD',
+      'amount': 'RM1,000',
+      'converted': 'USD 216.50',
+      'route': 'Direct Conversion',
+      'time': '3 days ago',
+      'icon': Icons.swap_horiz,
+      'color': Colors.blue,
+    },
+  ];
+
+  final List<String> aiSuggestions = [
+    '💡 FX rate to IDR is 3% better this morning!',
+    'FX rate for JPY is favorable today',
+    'Consider converting to Gold Token - market volatility expected',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey[50],
+      appBar: AppBar(
+        title: Text(
+          'Hi, $username',
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        centerTitle: false,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        foregroundColor: Theme.of(context).colorScheme.onSurface,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () => Navigator.pushNamed(context, '/settings'),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 10),
+            // E-Invoicing Card/Button
+            Card(
+              color: Colors.deepPurple[50],
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              child: ListTile(
+                leading: const Icon(Icons.receipt_long, color: Colors.deepPurple, size: 32),
+                title: const Text('E-Invoicing', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                subtitle: const Text('Create and manage your business invoices'),
+                trailing: const Icon(Icons.arrow_forward_ios, color: Colors.deepPurple),
+                onTap: () => Navigator.pushNamed(context, '/einvoicing_screen'),
+              ),
+            ),
+            const SizedBox(height: 10),
+            // Transaction History Card/Button
+            Card(
+              color: Colors.blue[50],
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              child: ListTile(
+                leading: const Icon(Icons.history, color: Colors.blue, size: 32),
+                title: const Text('Transaction History', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                subtitle: const Text('View your past transactions'),
+                trailing: const Icon(Icons.arrow_forward_ios, color: Colors.blue),
+                onTap: () => Navigator.pushNamed(context, '/transaction_history'),
+              ),
+            ),
+            const SizedBox(height: 10),
+            // Transaction Invoice Card/Button
+            Card(
+              color: Colors.green[50],
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              child: ListTile(
+                leading: const Icon(Icons.description, color: Colors.green, size: 32),
+                title: const Text('Transaction Invoice', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                subtitle: const Text('View your transaction invoices'),
+                trailing: const Icon(Icons.arrow_forward_ios, color: Colors.green),
+                onTap: () => Navigator.pushNamed(context, '/einvoicing_screen'),
+              ),
+            ),
+            const SizedBox(height: 10),
+            // Business Dashboard Card/Button
+            Card(
+              color: Colors.amber[50],
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              child: ListTile(
+                leading: const Icon(Icons.dashboard, color: Colors.amber, size: 32),
+                title: const Text('Business Dashboard', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                subtitle: const Text('View your business activity and integrations'),
+                trailing: const Icon(Icons.arrow_forward_ios, color: Colors.amber),
+                onTap: () => Navigator.pushNamed(context, '/business_dashboard'),
+              ),
+            ),
+            const SizedBox(height: 10),
+            // TEMP: Dev navigation buttons
+            Container(
+              margin: const EdgeInsets.only(bottom: 8),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
+              decoration: BoxDecoration(
+                color: AppColors.lace.withAlpha((0.7 * 255).round()),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _FancyNavButton(
+                      label: 'Chain Selection',
+                      onTap: () => Navigator.pushNamed(context, '/chain_selection'),
+                    ),
+                    const SizedBox(width: 14),
+                    _FancyNavButton(
+                      label: 'Bridge Status',
+                      onTap: () => Navigator.pushNamed(context, '/bridge_status'),
+                    ),
+                    const SizedBox(width: 14),
+                    _FancyNavButton(
+                      label: 'Gas Fee Comparison',
+                      onTap: () => Navigator.pushNamed(context, '/gas_fee_comparison'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            _buildWalletCardsSection(),
+            const SizedBox(height: 20),
+
+            // --- Business Dashboard Block ---
+            Card(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Row(
+                  children: [
+                    const Icon(Icons.show_chart, color: Colors.deepPurple, size: 36),
+                    const SizedBox(width: 18),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('RM 1,250.50', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                        Text('from 23 transactions', style: const TextStyle(fontSize: 15)),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 22),
+            Card(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Latest Integrations', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      height: 48,
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 4,
+                        separatorBuilder: (_, __) => const SizedBox(width: 12),
+                        itemBuilder: (context, i) {
+                          final integrations = [
+                            {'icon': Icons.qr_code, 'name': 'DuitNow QR'},
+                            {'icon': Icons.account_balance, 'name': 'Maybank'},
+                            {'icon': Icons.account_balance_wallet, 'name': 'TNG Wallet'},
+                          ];
+                          if (i < integrations.length) {
+                            final item = integrations[i];
+                            return Chip(
+                              avatar: Icon(item['icon'] as IconData, size: 20, color: Colors.deepPurple),
+                              label: Text(item['name'] as String),
+                              backgroundColor: Colors.deepPurple[50],
+                            );
+                          } else {
+                            return ActionChip(
+                              avatar: const Icon(Icons.add, color: Colors.deepPurple),
+                              label: const Text('Add Integration'),
+                              onPressed: () {},
+                              backgroundColor: Colors.deepPurple[100],
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 22),
+            Card(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+              child: Padding(
+                padding: const EdgeInsets.all(18),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Loan Eligibility Status', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Icon(Icons.eco, color: Colors.green[700], size: 28),
+                        const SizedBox(width: 8),
+                        const Text('Green Score: 78', style: TextStyle(fontWeight: FontWeight.bold)),
+                        const SizedBox(width: 16),
+                        Chip(
+                          label: const Text('Silver'),
+                          backgroundColor: Colors.blue[100],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    const Text('Eligible for 3.5–4.2% Green Loan', style: TextStyle(color: Colors.green, fontWeight: FontWeight.w600)),
+                    const SizedBox(height: 8),
+                    ElevatedButton(
+                      onPressed: () => Navigator.pushNamed(context, '/green_loan'),
+                      child: const Text('View Green Loan Details'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 22),
+            Card(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+              child: Padding(
+                padding: const EdgeInsets.all(18),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Invoices Generated', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                    const SizedBox(height: 10),
+                    ListTile(
+                      leading: const Icon(Icons.check_circle, color: Colors.green),
+                      title: const Text('#INV1002 – RM350.00'),
+                      subtitle: const Text('Paid'),
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.cancel, color: Colors.red),
+                      title: const Text('#INV1003 – RM600.00'),
+                      subtitle: const Text('Unpaid'),
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.hourglass_bottom, color: Colors.amber),
+                      title: const Text('#INV1004 – RM1200.00'),
+                      subtitle: const Text('Pending'),
+                    ),
+                    const SizedBox(height: 8),
+                    ElevatedButton.icon(
+                      icon: const Icon(Icons.add),
+                      label: const Text('Generate New Invoice'),
+                      onPressed: () => Navigator.pushNamed(context, '/einvoicing_screen'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 22),
+            Card(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+              child: Padding(
+                padding: const EdgeInsets.all(18),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Manage BizID Profile', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Icon(Icons.verified, color: Colors.green, size: 28),
+                        const SizedBox(width: 8),
+                        const Text('BizID: BIZ20230921A', style: TextStyle(fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                    const SizedBox(height: 6),
+                    const Text('Name: Eco Mart'),
+                    const Text('Category: Retail'),
+                    const SizedBox(height: 8),
+                    ElevatedButton(
+                      onPressed: () {
+                        // TODO: Implement navigation to BizProfilePage
+                      },
+                      child: const Text('Manage Profile'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 22),
+
+            _buildGeoAwareBalanceSection(),
+            const SizedBox(height: 20),
+            _buildAISuggestionsPanel(),
+            const SizedBox(height: 20),
+            _buildNavigationButtons(),
+            const SizedBox(height: 20),
+            _buildTransactionHistorySection(),
+            const SizedBox(height: 20),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// --- Add missing methods to DashboardPageV2 ---
+extension DashboardPageV2Methods on _DashboardPageV2State {
+  Widget _buildWalletCardsSection() => (_DashboardPageState()._buildWalletCardsSection());
+  Widget _buildGeoAwareBalanceSection() => (_DashboardPageState()._buildGeoAwareBalanceSection());
+  Widget _buildAISuggestionsPanel() => (_DashboardPageState()._buildAISuggestionsPanel());
+  Widget _buildNavigationButtons() => (_DashboardPageState()._buildNavigationButtons());
+  Widget _buildTransactionHistorySection() => (_DashboardPageState()._buildTransactionHistorySection());
 }

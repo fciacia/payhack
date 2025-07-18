@@ -30,6 +30,13 @@ class _HomeScaffoldState extends State<HomeScaffold> {
     setState(() {
       _selectedIndex = index;
     });
+    if (index == 0) {
+      // Business button
+      Navigator.pushNamed(context, '/bizid_onboarding');
+    } else if (index == 1) {
+      // Loan button
+      Navigator.pushNamed(context, '/green_loan');
+    }
   }
 
   @override
@@ -56,6 +63,24 @@ class _HomeScaffoldState extends State<HomeScaffold> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        // Send Money button
+                        ListTile(
+                          leading: const Icon(Icons.send, color: Colors.deepPurple),
+                          title: const Text('Send Money', style: TextStyle(fontWeight: FontWeight.bold)),
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.pushNamed(context, '/send_flow');
+                          },
+                        ),
+                        // Request Money button
+                        ListTile(
+                          leading: const Icon(Icons.request_page, color: Colors.deepPurple),
+                          title: const Text('Request Money', style: TextStyle(fontWeight: FontWeight.bold)),
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.pushNamed(context, '/request_money');
+                          },
+                        ),
                         // Chain Selection button
                         ListTile(
                           leading: const Icon(
@@ -157,8 +182,8 @@ class _HomeScaffoldState extends State<HomeScaffold> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              _buildNavIcon(context, 0, Icons.send, 'Send'),
-              _buildNavIcon(context, 1, Icons.request_page, 'Request'),
+              _buildNavIcon(context, 0, Icons.business_center, 'Business'),
+              _buildNavIcon(context, 1, Icons.account_balance, 'Loan'),
               const SizedBox(width: 36),
               // Merchants button
               Expanded(
@@ -218,8 +243,11 @@ class _HomeScaffoldState extends State<HomeScaffold> {
       child: InkWell(
         onTap: () {
           if (index == 0) {
-            // Send button: open send money flow
-            Navigator.pushNamed(context, '/send_flow');
+            // Business button
+            Navigator.pushNamed(context, '/bizid_onboarding');
+          } else if (index == 1) {
+            // Loan button
+            Navigator.pushNamed(context, '/green_loan');
           } else {
             _onTabTapped(index);
           }
