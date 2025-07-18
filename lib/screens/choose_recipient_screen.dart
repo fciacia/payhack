@@ -18,7 +18,7 @@ class _DashboardPageState extends State<DashboardPage> {
   final List<Map<String, dynamic>> walletAssets = [
     {
       'name': 'MYR',
-      'balance': 'RM100,000,000',
+      'balance': 'RM10,000', // Reduced amount
       'icon': Icons.attach_money,
       'color': Colors.green,
       'trend': 'up',
@@ -400,80 +400,42 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
       clipBehavior: Clip.hardEdge,
       child: Column(
-        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Container(
-                width: 32,
-                height: 32,
-                decoration: BoxDecoration(
-                  color: asset['color'].withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Icon(asset['icon'], color: asset['color'], size: 16),
-              ),
-              const Spacer(),
-              _buildTrendIndicator(asset['trend']),
-            ],
-          ),
-          const SizedBox(height: 6),
+          // Currency code as title
           Text(
             asset['name'],
-            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: asset['color'],
+            ),
           ),
-          const SizedBox(height: 2),
+          const SizedBox(height: 8),
+          // Balance
           Text(
             asset['balance'],
             style: const TextStyle(
-              fontSize: 15,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
               color: Colors.deepPurple,
             ),
           ),
-          // ESG/Green tag for Gold and Basket
-          if (asset['esgTag'] != null) ...[
-            const SizedBox(height: 4),
-            Row(
-              children: [
-                Icon(asset['esgIcon'], color: Colors.green, size: 16),
-                const SizedBox(width: 4),
-                Text(
-                  asset['esgTag'],
-                  style: const TextStyle(
-                    fontSize: 11,
-                    color: Colors.green,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-          ],
-          const SizedBox(height: 4),
+          const Spacer(),
+          // Convert button
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepPurple.withAlpha(
-                  (0.1 * 255).round(),
-                ),
+                backgroundColor: Colors.deepPurple[50],
                 foregroundColor: Colors.deepPurple,
-                elevation: 0,
-                padding: const EdgeInsets.symmetric(vertical: 4),
-                textStyle: const TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.bold,
-                ),
-                minimumSize: const Size(0, 28),
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(10),
                 ),
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                textStyle: const TextStyle(fontWeight: FontWeight.bold),
               ),
-              onPressed: () {
-                Navigator.pushNamed(context, '/send_flow');
-              },
+              onPressed: () {},
               child: const Text('Convert'),
             ),
           ),
@@ -859,14 +821,14 @@ class _DashboardPageState extends State<DashboardPage> {
                     color: Colors.green,
                     minHeight: 7,
                   ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 16), // Increased space before pie chart
                   // Pie chart and legend in a row
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                        height: 48,
-                        width: 48,
+                        height: 32, // smaller pie chart
+                        width: 32,
                         child: CustomPaint(
                           painter: _ImpactPieChartPainter(breakdown),
                         ),
@@ -883,29 +845,6 @@ class _DashboardPageState extends State<DashboardPage> {
                         ],
                       ),
                     ],
-                  ),
-                  const SizedBox(height: 4),
-                  const Text(
-                    'Keep making positive choices to grow your impact!',
-                    style: TextStyle(fontSize: 11, color: Colors.green),
-                  ),
-                  const SizedBox(height: 6),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () =>
-                          Navigator.pushNamed(context, '/ai_sustainability_dashboard'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      child: const Text('View Full Impact Dashboard'),
-                    ),
                   ),
                 ],
               ),
