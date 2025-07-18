@@ -7,6 +7,17 @@ class ConfirmTransferScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    final avatar = args?['avatar'];
+    final username = args?['username'] ?? '@Felicia';
+    final amount = args?['amount'] ?? '500';
+    final currency = args?['currency'] ?? 'USD';
+    final roundUp = args?['roundUp'] ?? false;
+    final roundUpAmount = args?['roundUpAmount'] ?? 0.0;
+    final cause = args?['cause'] ?? 'Trees';
+    final carbon = args?['carbon'] ?? '0.05kg CO₂';
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Confirm Transfer'),
@@ -29,19 +40,27 @@ class ConfirmTransferScreen extends StatelessWidget {
                       backgroundColor: Theme.of(
                         context,
                       ).colorScheme.primary.withAlpha((0.1 * 255).round()),
-                      child: const Text(
-                        'F',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 30,
-                        ),
-                      ),
+                      backgroundImage: avatar != null
+                          ? NetworkImage(avatar)
+                          : null,
+                      child: avatar == null
+                          ? const Text(
+                              'F',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30,
+                              ),
+                            )
+                          : null,
                     ),
                   ),
                   const SizedBox(height: 12),
-                  const Text(
-                    '@Felicia',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  Text(
+                    '@$username',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
@@ -56,7 +75,16 @@ class ConfirmTransferScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            GlassCard(child: _SummaryCardContent()),
+            GlassCard(
+              child: _ImpactSummaryContent(
+                amount: amount,
+                currency: currency,
+                roundUp: roundUp,
+                roundUpAmount: roundUpAmount,
+                cause: cause,
+                carbon: carbon,
+              ),
+            ),
             const Spacer(),
             _buildGradientButton(context),
             const SizedBox(height: 10),
@@ -236,47 +264,127 @@ class ConfirmTransferScreen extends StatelessWidget {
   }
 }
 
-class _SummaryCardContent extends StatelessWidget {
+class _ImpactSummaryContent extends StatelessWidget {
+  final String amount;
+  final String currency;
+  final bool roundUp;
+  final dynamic roundUpAmount;
+  final String cause;
+  final String carbon;
+
+  const _ImpactSummaryContent({
+    required this.amount,
+    required this.currency,
+    required this.roundUp,
+    required this.roundUpAmount,
+    required this.cause,
+    required this.carbon,
+  });
+
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSummaryRow(
-          context,
-          'Amount:',
-          'RM 500',
-          icon: FontAwesomeIcons.moneyBillWave,
+        Row(
+          children: [
+            const Icon(Icons.send, color: Colors.deepPurple, size: 20),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                'Transferring RM$amount to $currency.',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
         ),
-        const SizedBox(height: 20),
-        _buildSummaryRow(
-          context,
-          'Will receive:',
-          'USD 108.50',
-          icon: FontAwesomeIcons.wallet,
+        const SizedBox(height: 14),
+        if (roundUp && roundUpAmount != null && roundUpAmount > 0)
+          Row(
+            children: [
+              const Icon(Icons.eco, color: Colors.green, size: 18),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  'Round-up contribution: RM${(roundUpAmount is double ? roundUpAmount.toStringAsFixed(2) : roundUpAmount)} to $cause.',
+                  style: const TextStyle(
+                    fontSize: 15,
+                    color: Colors.green,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        if (roundUp && roundUpAmount != null && roundUpAmount > 0)
+          const SizedBox(height: 10),
+        Row(
+          children: [
+            const Icon(Icons.cloud, color: Colors.blueGrey, size: 18),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                'Est. carbon footprint of transfer: $carbon',
+                style: const TextStyle(
+                  fontSize: 15,
+                  color: Colors.blueGrey,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 14),
+        Row(
+          children: [
+            const Icon(Icons.insights, color: Colors.amber, size: 18),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Tooltip(
+                message:
+                    "You're making a greener choice by avoiding traditional SWIFT!",
+                child: const Text(
+                  'Smart Insights: Greener route selected (blockchain-based)',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.amber,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        // FX Rate and info
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: [
-                const FaIcon(
-                  FontAwesomeIcons.chartLine,
-                  size: 20,
+                const Icon(
+                  Icons.currency_exchange,
+                  size: 18,
                   color: Colors.deepPurple,
                 ),
-                const SizedBox(width: 15),
+                const SizedBox(width: 8),
                 const Text(
                   'FX Rate:',
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                  style: TextStyle(fontSize: 15, color: Colors.grey),
                 ),
               ],
             ),
             Row(
               children: [
-                const Text(
-                  '1 RM = 0.217 USD',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                Text(
+                  '1 RM = 0.217 $currency',
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(width: 5),
                 GestureDetector(
@@ -306,37 +414,6 @@ class _SummaryCardContent extends StatelessWidget {
               ],
             ),
           ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSummaryRow(
-    BuildContext context,
-    String title,
-    String value, {
-    required IconData icon,
-  }) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            FaIcon(
-              icon,
-              color: Theme.of(context).colorScheme.primary,
-              size: 20,
-            ),
-            const SizedBox(width: 15),
-            Text(
-              title,
-              style: TextStyle(fontSize: 16, color: Colors.grey[600]),
-            ),
-          ],
-        ),
-        Text(
-          value,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
       ],
     );

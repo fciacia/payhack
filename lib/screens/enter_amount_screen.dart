@@ -13,6 +13,28 @@ class _EnterAmountScreenState extends State<EnterAmountScreen> {
   );
   String _selectedCurrency = 'USD';
   final List<String> _currencies = ['USD', 'EUR', 'USDT', 'BRL'];
+  bool _roundUp = false;
+  final List<String> _causes = [
+    'Trees',
+    'Clean Oceans',
+    'Local Community Support',
+  ];
+  String _selectedCause = 'Trees';
+
+  double get _amount {
+    final val = double.tryParse(_amountController.text) ?? 0;
+    return val;
+  }
+
+  double get _roundUpAmount {
+    if (!_roundUp) return 0.0;
+    final nextInt = _amount.ceilToDouble();
+    return (nextInt - _amount).toStringAsFixed(2) == '0.00'
+        ? 1.0
+        : (nextInt - _amount);
+  }
+
+  String get _carbonEstimate => '0.05kg CO₂';
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +129,50 @@ class _EnterAmountScreenState extends State<EnterAmountScreen> {
                 ),
               ],
             ),
+            // Round-Up for a Cause toggle
+            const SizedBox(height: 18),
+            Row(
+              children: [
+                Switch(
+                  value: _roundUp,
+                  onChanged: (val) => setState(() => _roundUp = val),
+                  activeColor: Colors.green,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'Round up to the nearest RM? (e.g., RM${_roundUpAmount.toStringAsFixed(2)} to $_selectedCause)',
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            if (_roundUp) ...[
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  const Text('Cause:', style: TextStyle(fontSize: 15)),
+                  const SizedBox(width: 10),
+                  DropdownButton<String>(
+                    value: _selectedCause,
+                    items: _causes
+                        .map(
+                          (cause) => DropdownMenuItem(
+                            value: cause,
+                            child: Text(cause),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (val) {
+                      if (val != null) setState(() => _selectedCause = val);
+                    },
+                  ),
+                ],
+              ),
+            ],
             const SizedBox(height: 32),
             // Currency toggle
             const Text(
@@ -148,7 +214,7 @@ class _EnterAmountScreenState extends State<EnterAmountScreen> {
             const SizedBox(height: 32),
             // FX Rate preview
             Text(
-              'RM ${_amountController.text} → $_selectedCurrency 108.50 (Live Rate)',
+              'RM ${_amountController.text} → $_selectedCurrency 108.50 (Live Rate) | Est. Transfer Carbon: $_carbonEstimate',
               style: TextStyle(
                 fontSize: 16,
                 color: Theme.of(context).colorScheme.primary,
@@ -177,6 +243,10 @@ class _EnterAmountScreenState extends State<EnterAmountScreen> {
                       'username': username,
                       'amount': _amountController.text,
                       'currency': _selectedCurrency,
+                      'roundUp': _roundUp,
+                      'roundUpAmount': _roundUpAmount,
+                      'cause': _selectedCause,
+                      'carbon': _carbonEstimate,
                     },
                   );
                 },

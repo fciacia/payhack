@@ -9,6 +9,26 @@ class OfflineModeScreen extends StatefulWidget {
 
 class OfflineModeScreenState extends State<OfflineModeScreen> {
   int queuedTransactions = 3;
+  // Mock: Each queued transaction retains its eco-pulse/round-up info
+  final List<Map<String, dynamic>> queuedTxs = [
+    {
+      'amount': 'RM500',
+      'recipient': '@Felicia',
+      'ecoPulse': true,
+      'roundUp': true,
+      'cause': 'Trees',
+      'roundUpAmount': '0.60',
+    },
+    {'amount': 'RM200', 'recipient': '@Cafe', 'ecoPulse': false},
+    {
+      'amount': 'RM100',
+      'recipient': '@LocalStore',
+      'ecoPulse': true,
+      'roundUp': true,
+      'cause': 'Clean Oceans',
+      'roundUpAmount': '0.40',
+    },
+  ];
 
   void _confirmTransfer() {
     setState(() {
@@ -108,6 +128,49 @@ class OfflineModeScreenState extends State<OfflineModeScreen> {
                       ],
                     ),
                     const SizedBox(height: 8),
+                    // Make the queued transactions scrollable with a max height
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(maxHeight: 120),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: queuedTxs.length,
+                        itemBuilder: (context, idx) {
+                          final tx = queuedTxs[idx];
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4.0),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  tx['ecoPulse'] == true
+                                      ? Icons.eco
+                                      : Icons.sync,
+                                  color: tx['ecoPulse'] == true
+                                      ? Colors.green
+                                      : Colors.grey,
+                                  size: 18,
+                                ),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    tx['ecoPulse'] == true &&
+                                            tx['roundUp'] == true
+                                        ? '${tx['amount']} to ${tx['recipient']}  |  Round-up: RM${tx['roundUpAmount']} to ${tx['cause']}'
+                                        : '${tx['amount']} to ${tx['recipient']}',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: tx['ecoPulse'] == true
+                                          ? Colors.green
+                                          : Colors.black87,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 8),
                     const Text(
                       'Will sync when online.',
                       style: TextStyle(fontSize: 14, color: Colors.grey),
@@ -141,10 +204,25 @@ class OfflineModeScreenState extends State<OfflineModeScreen> {
               style: TextStyle(fontSize: 13, color: Colors.grey),
               textAlign: TextAlign.center,
             ),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.eco, color: Colors.green, size: 16),
+                SizedBox(width: 6),
+                Flexible(
+                  child: Text(
+                    'Eco-Pulse impact and round-up data will sync to your Impact Dashboard once online.',
+                    style: TextStyle(fontSize: 13, color: Colors.green),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
             const SizedBox(height: 10),
-          ],
-        ),
-      ),
-    );
+          ], // closes children list for Column
+        ), // closes Column
+      ), // closes Padding
+    ); // closes Scaffold
   }
 }
