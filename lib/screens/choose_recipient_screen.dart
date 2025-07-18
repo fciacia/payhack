@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../state/settings_notifier.dart';
 import '../app_colors.dart';
 
 class DashboardPage extends StatefulWidget {
-  final bool isBusiness;
-  const DashboardPage({super.key, this.isBusiness = false});
+  const DashboardPage({super.key});
 
   @override
   State<DashboardPage> createState() => _DashboardPageState();
@@ -109,7 +110,13 @@ class _DashboardPageState extends State<DashboardPage> {
         centerTitle: false,
         elevation: 0,
         backgroundColor: Colors.transparent,
-        foregroundColor: Theme.of(context).colorScheme.onBackground,
+        foregroundColor: Theme.of(context).colorScheme.onSurface,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () => Navigator.pushNamed(context, '/settings'),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -504,6 +511,8 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Widget _buildNavigationButtons() {
+    final isBusiness = context.watch<SettingsNotifier>().isBusiness;
+
     return Wrap(
       alignment: WrapAlignment.center,
       spacing: 24,
@@ -523,6 +532,9 @@ class _DashboardPageState extends State<DashboardPage> {
         _buildNavButton(Icons.request_page, 'Request Money', '/request_money'),
         _buildNavButton(Icons.qr_code_scanner, 'Scan QR', '/my_qr_code'),
         _buildNavButton(Icons.wifi_off, 'Offline Mode', '/offline_mode'),
+        if (isBusiness) ...[
+          _buildNavButton(Icons.receipt_long, 'E-Invoicing', '/einvoicing_screen'),
+        ],
       ],
     );
   }
@@ -643,19 +655,6 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 }
-
-// // TODO: implement business mode
-//             //if (isBusiness) ...[
-//               const SizedBox(height: 15),
-//               _buildActionButton(
-//                 context,
-//                 icon: Icons.receipt_long,
-//                 title: 'E-Invoicing',
-//                 onTap: () {
-//                   Navigator.pushNamed(context, '/e_invoicing_screen');
-//                 },
-//               ),
-//             //],
 
 class _FancyNavButton extends StatefulWidget {
   final String label;

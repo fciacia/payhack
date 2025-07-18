@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../state/settings_notifier.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -11,10 +13,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool advancedMode = false;
   String selectedLanguage = 'English';
   String selectedCurrency = 'MYR';
-  bool _isBusiness = false;
 
   @override
   Widget build(BuildContext context) {
+    final settings = context.watch<SettingsNotifier>();
+
     return Scaffold(
       appBar: AppBar(title: const Text("Settings")),
       body: ListView(
@@ -74,18 +77,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           const Divider(),
           // TODO: if user no business account, show option to create one
-          SwitchListTile.adaptive(
-            title: Text(_isBusiness
+          SwitchListTile(
+            title: Text(settings.isBusiness
                 ? "Business Account ON"
                 : "Switch to business user / Create business account"),
-            subtitle:
-                Text(_isBusiness ? "You are now using a business profile." : "Unlock more features for companies/merchants."),
-            value: _isBusiness,
-            onChanged: (value) {
-              setState(() {
-                _isBusiness = value;
-              });
-            },
+            subtitle: Text(settings.isBusiness
+                ? "You are now using a business profile."
+                : "Unlock more features for companies/merchants."),
+            value: settings.isBusiness,
+            onChanged: (v) => context.read<SettingsNotifier>().toggleBusiness(v),
           ),
         ],
       ),

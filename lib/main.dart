@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'app_colors.dart';
 import 'package:device_preview/device_preview.dart';
 
@@ -34,9 +35,25 @@ import 'screens/sign_up_screen.dart';
 import 'screens/personal_info_screen.dart';
 import 'screens/identity_verified_screen.dart';
 import 'screens/identity_verification_screen.dart';
+import 'screens/e_invoicing_screen.dart';
+
+// Notifiers
+import 'state/settings_notifier.dart';
+import 'state/invoice_notifier.dart';
 
 void main() {
-  runApp(DevicePreview(enabled: true, builder: (context) => const MyApp()));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => SettingsNotifier()),
+        ChangeNotifierProvider(create: (_) => InvoiceNotifier()),
+      ],
+      child: DevicePreview(
+        enabled: true,
+        builder: (context) => const MyApp(),
+      ),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -190,6 +207,7 @@ class MyApp extends StatelessWidget {
         '/received_funds': (context) => const ReceivedFundsScreen(),
         '/transaction_invoice' : (context) => const TransactionInvoiceScreen(),
         '/settings_screen': (context) => const SettingsScreen(),
+        '/einvoicing_screen': (context) => const EInvoicingScreen(),
       },
     );
   }
