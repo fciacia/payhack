@@ -36,6 +36,10 @@ import 'screens/personal_info_screen.dart';
 import 'screens/identity_verified_screen.dart';
 import 'screens/identity_verification_screen.dart';
 import 'screens/e_invoicing_screen.dart';
+import 'screens/ai_sustainability_dashboard.dart';
+import 'screens/educational_modules_screen.dart';
+
+
 
 // Notifiers
 import 'state/settings_notifier.dart';

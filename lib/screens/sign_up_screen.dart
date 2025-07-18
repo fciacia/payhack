@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'home_scaffold.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
@@ -41,8 +42,8 @@ class _SignUpBodyState extends State<_SignUpBody> {
   Future<void> _handleGoogleSignIn() async {
     setState(() => _isGoogleLoading = true);
     try {
-      final GoogleSignIn _googleSignIn = GoogleSignIn();
-      final account = await _googleSignIn.signIn();
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      final account = await googleSignIn.signIn();
       if (account != null) {
         if (mounted) {
           Navigator.pushNamed(context, '/personal_info');
@@ -93,7 +94,7 @@ class _SignUpBodyState extends State<_SignUpBody> {
                     borderRadius: BorderRadius.circular(18),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.04),
+                        color: Colors.black.withAlpha((0.04 * 255).round()),
                         blurRadius: 16,
                         offset: const Offset(0, 6),
                       ),
@@ -214,6 +215,7 @@ class _SignUpBodyState extends State<_SignUpBody> {
                               color: Colors.black,
                               fontWeight: FontWeight.w600,
                             ),
+                            textAlign: TextAlign.center,
                           ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
@@ -224,7 +226,7 @@ class _SignUpBodyState extends State<_SignUpBody> {
                       ),
                       elevation: 2,
                       side: const BorderSide(color: Color(0xFFE0E0E0)),
-                      alignment: Alignment.centerLeft,
+                      alignment: Alignment.center,
                     ),
                     onPressed: _isGoogleLoading ? null : _handleGoogleSignIn,
                   ),
@@ -246,6 +248,7 @@ class _SignUpBodyState extends State<_SignUpBody> {
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,
@@ -255,7 +258,7 @@ class _SignUpBodyState extends State<_SignUpBody> {
                         borderRadius: BorderRadius.circular(14),
                       ),
                       elevation: 2,
-                      alignment: Alignment.centerLeft,
+                      alignment: Alignment.center,
                     ),
                     onPressed: () {},
                   ),
@@ -277,6 +280,7 @@ class _SignUpBodyState extends State<_SignUpBody> {
                         color: Color(0xFF16204E),
                         fontWeight: FontWeight.w600,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFFF5F7FB),
@@ -286,9 +290,44 @@ class _SignUpBodyState extends State<_SignUpBody> {
                         borderRadius: BorderRadius.circular(14),
                       ),
                       elevation: 0,
-                      alignment: Alignment.centerLeft,
+                      alignment: Alignment.center,
                     ),
                     onPressed: () {},
+                  ),
+                ),
+                const SizedBox(height: 24),
+                // Continue as Guest button
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    icon: const Icon(
+                      Icons.person_outline,
+                      color: Color(0xFF4CAF50),
+                      size: 22,
+                    ),
+                    label: const Text(
+                      'Continue as Guest',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Color(0xFF4CAF50),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: Color(0xFF4CAF50), width: 1.5),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const HomeScaffold(),
+                        ),
+                      );
+                    },
                   ),
                 ),
                 const SizedBox(height: 28),

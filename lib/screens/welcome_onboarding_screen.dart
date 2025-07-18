@@ -36,7 +36,7 @@ class WelcomeOnboardingScreen extends StatelessWidget {
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.04),
+                        color: Colors.black.withAlpha((0.04 * 255).round()),
                         blurRadius: 16,
                         offset: const Offset(0, 6),
                       ),
@@ -80,6 +80,16 @@ class WelcomeOnboardingScreen extends StatelessWidget {
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF16204E),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Seamless global payments, with a positive impact.',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Color(0xFF4CAF50), // green for positive impact
+                    fontWeight: FontWeight.w500,
                   ),
                   textAlign: TextAlign.center,
                 ),

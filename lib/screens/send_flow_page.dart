@@ -1209,7 +1209,9 @@ class _EnterAmountStep extends StatelessWidget {
                         Text(
                           'Converted Amount',
                           style: TextStyle(
-                            color: AppColors.sapphire.withOpacity(0.7),
+                            color: AppColors.sapphire.withAlpha(
+                              (0.7 * 255).round(),
+                            ),
                             fontWeight: FontWeight.w600,
                             fontSize: 14,
                           ),
