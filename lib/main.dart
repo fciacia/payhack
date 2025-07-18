@@ -10,6 +10,7 @@ import 'screens/recurring_transfer_confirmation_screen.dart';
 import 'screens/received_funds_screen.dart';
 import 'screens/transaction_history_screen.dart';
 import 'screens/transaction_invoice_screen.dart';
+import 'screens/settings_screen.dart';
 import 'package:device_preview/device_preview.dart';
 
 void main() {
@@ -26,6 +27,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isUserBusiness = false;
+
     final baseTextTheme = GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme);
     return MaterialApp(
       title: 'Send Money',
@@ -112,7 +115,8 @@ class MyApp extends StatelessWidget {
         '/recurring_transfer_confirmation': (context) => const RecurringTransferConfirmationScreen(),
         '/transaction_history': (context) => const TransactionHistoryScreen(),
         '/received_funds': (context) => const ReceivedFundsScreen(),
-        '/transaction_invoice' : (context) => const TransactionInvoiceScreen()
+        '/transaction_invoice' : (context) => const TransactionInvoiceScreen(),
+        '/settings_screen': (context) => const SettingsScreen(),
       },
     );
   }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ChooseRecipientScreen extends StatelessWidget {
-  const ChooseRecipientScreen({super.key});
+  // check if business mode is enabled
+  final bool isBusiness;
+  const ChooseRecipientScreen({super.key, this.isBusiness = false});
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +23,14 @@ class ChooseRecipientScreen extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.transparent,
         foregroundColor: Theme.of(context).colorScheme.onBackground,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.pushNamed(context, '/settings_screen');
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -140,6 +150,18 @@ class ChooseRecipientScreen extends StatelessWidget {
                 Navigator.pushNamed(context, '/transaction_history');
               },
             ),
+            // TODO: implement business mode
+            //if (isBusiness) ...[
+              const SizedBox(height: 15),
+              _buildActionButton(
+                context,
+                icon: Icons.receipt_long,
+                title: 'E-Invoicing',
+                onTap: () {
+                  Navigator.pushNamed(context, '/e_invoicing_screen');
+                },
+              ),
+            //],
           ],
         ),
       ),
